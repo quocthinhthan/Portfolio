@@ -31,12 +31,37 @@ export const dictionaries = {
     "exp.intern.company": "Đang tìm kiếm cơ hội",
     "exp.intern.desc": "Đang chuẩn bị CV và kiến thức chuyên sâu để ứng tuyển vị trí thực tập/fresher Backend.",
 
-    "projects.title": "Dự Án Nổi Bật",
-    "projects.viewDetails": "Xem chi tiết →",
-    "projects.modal.role": "Vai trò",
-    "projects.modal.description": "Mô tả chi tiết",
-    "projects.modal.features": "Tính năng chính",
+    // =========================================================
+    // 🟢 CẬP NHẬT PHẦN PROJECTS CHO GIAO DIỆN MỚI
+    // =========================================================
+    "projects.title": "Dự Án Nổi Bật", // Key cũ (giữ lại nếu dùng chỗ khác)
     
+    // Header Section
+    "projects.section.label": "Sản Phẩm Kỹ Thuật",
+    "projects.title.line1": "Dự Án",
+    "projects.title.line2": "Tiêu Biểu",
+    "projects.intro.desc": "Tuyển tập các hệ thống Backend được xây dựng với sự chú trọng tối đa vào khả năng mở rộng.",
+    
+    // Card Actions
+    "projects.viewDetails": "Xem chi tiết →", // Key cũ
+    "projects.card.view_details": "Nhấn để xem chi tiết →", // Key mới cho card
+    "projects.btn.source": "Mã nguồn",
+    "projects.btn.demo": "Demo",
+    
+    // Github Card
+    "projects.github.view_more": "Xem thêm",
+    "projects.github.on": "trên",
+    "projects.github.visit_profile": "Xem Hồ Sơ",
+
+    // Modal Details
+    "projects.modal.role": "Vai trò",
+    "projects.modal.description": "Mô tả chi tiết", // Cập nhật text cho khớp context
+    "projects.modal.features": "Tính năng chính",
+    "projects.modal.links": "Liên Kết",
+    "projects.btn.source_code": "Mã Nguồn",
+    "projects.btn.live_demo": "Trải Nghiệm Ngay",
+
+    // Project Data Descriptions
     "proj.pentapulse.title": "PentaPulse",
     "proj.pentapulse.short": "Theo dõi bệnh nhân suy tim - Giải Nhì Startup TDTU.",
     "proj.pentapulse.full": "Lead Full-stack Developer. Tích hợp AI Gemini và Google Health Connect để theo dõi chỉ số sinh tồn bệnh nhân tự động.",
@@ -84,12 +109,37 @@ export const dictionaries = {
     "exp.intern.company": "Searching for Opportunities",
     "exp.intern.desc": "Preparing technical knowledge and projects for Backend internship/fresher roles.",
 
-    "projects.title": "Featured Projects",
-    "projects.viewDetails": "View Details →",
-    "projects.modal.role": "Role",
-    "projects.modal.description": "Detailed description",
-    "projects.modal.features": "Key features",
+    // =========================================================
+    // 🟢 UPDATED PROJECTS SECTION FOR NEW UI
+    // =========================================================
+    "projects.title": "Featured Projects", // Old key
+    
+    // Header Section
+    "projects.section.label": "Engineering Output",
+    "projects.title.line1": "Featured",
+    "projects.title.line2": "Projects",
+    "projects.intro.desc": "A collection of backend systems built with maximum focus on scalability.",
+    
+    // Card Actions
+    "projects.viewDetails": "View Details →", // Old key
+    "projects.card.view_details": "Click to view details →", // New key
+    "projects.btn.source": "Source",
+    "projects.btn.demo": "Demo",
 
+    // Github Card
+    "projects.github.view_more": "View More",
+    "projects.github.on": "on",
+    "projects.github.visit_profile": "Visit Profile",
+
+    // Modal Details
+    "projects.modal.role": "Role",
+    "projects.modal.description": "Description",
+    "projects.modal.features": "Key Features",
+    "projects.modal.links": "Project Links",
+    "projects.btn.source_code": "Source Code",
+    "projects.btn.live_demo": "Live Demo",
+
+    // Project Data Descriptions
     "proj.pentapulse.title": "PentaPulse",
     "proj.pentapulse.short": "Heart failure monitoring - 2nd Prize TDTU Startup.",
     "proj.pentapulse.full": "Lead Full-stack Developer. Integrated Gemini AI and Google Health Connect for automated vital signs monitoring.",

@@ -34,7 +34,7 @@ export const skills = [
 // Danh sách kinh nghiệm 'experience' (Để fix lỗi ở Experience.tsx)
 export const experience = [
   {
-    year: "2021 - 2025",
+    year: "2022 - 2026",
     title: "Software Engineering Student",
     company: "Ton Duc Thang University",
     description: "GPA hiện tại: 8.32/10. Hoàn thành hơn 12 dự án từ học thuật đến thực tế.",
@@ -78,6 +78,34 @@ export const projects: Project[] = [
     role: "Backend Developer",
     features: ["Auth", "Cart logic", "Order management"],
     githubUrl: "https://github.com/quocthinhthan/TelescopeStore",
+  },
+  {
+    id: "buffet-order-system",
+    title: "Buffet Order System",
+    shortDesc: "Hệ thống quản lý đặt món Buffet đa nền tảng.",
+    fullDesc: "Xây dựng toàn bộ hệ thống Backend bằng FastAPI để phục vụ cho ứng dụng gọi món tại bàn. Triển khai API lên Railway để hỗ trợ đội ngũ phát triển Frontend đa nền tảng.",
+    techStack: ["FastAPI", "MySQL", "Railway", "Flutter"],
+    role: "Backend Developer",
+    features: [
+      "Thiết kế và xây dựng Full Backend API",
+      "Quản lý cơ sở dữ liệu quan hệ MySQL",
+      "Triển khai và quản trị API trên nền tảng Cloud (Railway)"
+    ],
+    githubUrl: "https://github.com/quocthinhthan",
+  },
+  {
+    id: "network-security-tool",
+    title: "Network Security Tool",
+    shortDesc: "Công cụ phát hiện và ngăn chặn điểm truy cập giả mạo.",
+    fullDesc: "Phát triển một công cụ chạy trên Kali Linux có khả năng phát hiện các điểm truy cập WiFi giả mạo dựa trên địa chỉ MAC và thực hiện ngắt kết nối trái phép để bảo vệ người dùng.",
+    techStack: ["Python", "Flask API", "Kali Linux", "Network Protocol"],
+    role: "Full-stack Developer (Solo Project)",
+    features: [
+      "Phát hiện Access Point giả mạo dựa trên MAC Address",
+      "Tự động gửi gói tin deauthentication để bảo mật kết nối",
+      "Giao diện quản lý log và cảnh báo thời gian thực qua Flask API" 
+    ],
+    githubUrl: "https://github.com/quocthinhthan",
   }
   // Thêm các dự án khác vào đây...
 ];

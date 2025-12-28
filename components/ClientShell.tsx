@@ -3,6 +3,7 @@
 import { I18nProvider, useI18n } from "@/components/I18nProvider";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import CursorGlow from "@/components/ui/CursorGlow"; // Import hiệu ứng chuột
+import ParallaxIcons from "@/components/ui/ParallaxIcons";
 
 export default function ClientShell({
   children,
@@ -12,6 +13,7 @@ export default function ClientShell({
   return (
     <I18nProvider>
       <ThemeProvider>
+        <ParallaxIcons />
         {/* Hiệu ứng đèn pin theo chuột toàn trang */}
         <CursorGlow />
         <ShellInner>{children}</ShellInner>

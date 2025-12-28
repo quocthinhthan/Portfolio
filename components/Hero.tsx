@@ -7,8 +7,8 @@ import { useI18n } from "@/components/I18nProvider";
 import { Github, Terminal } from "lucide-react";
 import BackgroundBeams from "./ui/BackgroundBeams";
 import { useEffect, useState } from "react";
+import ParallaxIcons from "./ui/ParallaxIcons";
 
-// Hiệu ứng gõ chữ (Đã fix lỗi nuốt ký tự)
 const TypewriterEffect = ({ text }: { text: string }) => {
   const [displayedText, setDisplayedText] = useState("");
 
@@ -16,7 +16,6 @@ const TypewriterEffect = ({ text }: { text: string }) => {
     setDisplayedText(""); 
     let i = 0;
     const timer = setInterval(() => {
-      // Dùng slice để đảm bảo lấy đúng chuỗi ký tự, không bị mất chữ 'a'
       if (i <= text.length) {
         setDisplayedText(text.slice(0, i));
         i++;
