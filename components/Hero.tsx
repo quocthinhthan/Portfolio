@@ -89,7 +89,7 @@ export default function Hero() {
           className="text-5xl md:text-7xl font-black mb-4 tracking-tighter"
         >
           <span className="bg-clip-text text-transparent bg-gradient-to-b from-white via-slate-100 to-slate-500 drop-shadow-sm">
-            {personalInfo.name}
+            {t("personal.name")} 
           </span>
         </motion.h1>
 

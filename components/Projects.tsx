@@ -256,7 +256,7 @@ function ProjectCard({
         </motion.h3>
 
         <p className="text-slate-400 text-lg leading-relaxed pl-4 border-l-2 border-sky-500/30 line-clamp-3">
-          {t(`proj.${project.id}.full` as any) || "Mô tả dự án..."}
+          {t(`proj.${project.id}.short` as any) || "Mô tả dự án..."}
         </p>
         
         {/* 🟢 i18n applied */}
@@ -269,7 +269,7 @@ function ProjectCard({
           {project.features.slice(0, 2).map((f, i) => (
             <div key={i} className="flex items-start gap-3 text-slate-200 text-xs bg-white/5 p-3 rounded-xl border border-white/10">
               {getFeatureIcon(f)}
-              <span className="truncate">{f}</span>
+              <span className="truncate">{t(f as any)}</span>
             </div>
           ))}
         </div>
@@ -415,9 +415,15 @@ function ProjectModal({ project, isOpen, onClose, t }: { project: Project | null
                                     <h4 className="text-xl font-bold text-white flex items-center gap-2">
                                         <Terminal className="text-sky-500" /> {t("projects.modal.description" as any) || "Description"}
                                     </h4>
-                                    <p className="text-slate-300 leading-relaxed text-lg">
+                                    {/* <p className="text-slate-300 leading-relaxed text-lg">
                                         {t(`proj.${project.id}.full` as any) || "Mô tả chi tiết đang cập nhật..."}
-                                    </p>
+                                    </p> */}
+                                    <div 
+                                      className="text-slate-300 leading-relaxed text-lg space-y-2"
+                                      dangerouslySetInnerHTML={{ 
+                                          __html: t(`proj.${project.id}.full` as any) || project.fullDesc 
+                                      }}
+                                    />
                                     
                                     <div className="pt-6">
                                         {/* 🟢 i18n applied */}
@@ -428,7 +434,7 @@ function ProjectModal({ project, isOpen, onClose, t }: { project: Project | null
                                             {project.features.map((f, i) => (
                                                 <li key={i} className="flex items-start gap-3 p-4 rounded-xl bg-slate-900 border border-slate-800">
                                                     {getFeatureIcon(f)}
-                                                    <span className="text-slate-300">{f}</span>
+                                                    <span className="text-slate-300">{t(f as any)}</span>
                                                 </li>
                                             ))}
                                         </ul>

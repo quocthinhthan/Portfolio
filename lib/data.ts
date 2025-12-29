@@ -1,12 +1,12 @@
 // lib/data.ts
-import { Server, Database, Layout, Terminal, Users } from "lucide-react";
+import { Server, Database, Layout, Terminal, Users, Code2Icon } from "lucide-react";
 
 // Thông tin cá nhân
 export const personalInfo = {
   name: "Thân Quốc Thịnh",
   role: "Backend Developer | Software Engineering Student",
   description: "Sinh viên năm cuối ngành Kỹ thuật Phần mềm tại ĐH Tôn Đức Thắng với GPA 8.32/10. Chuyên sâu về hệ thống Backend, kiến trúc Event-driven và Docker.",
-  email: "quocthinhthan@gmail.com",
+  email: "thanquocthinh112@gmail.com",
   github: "https://github.com/quocthinhthan",
   linkedin: "https://linkedin.com/in/quocthinhthan",
 };
@@ -26,9 +26,14 @@ export interface Project {
 
 // Danh sách kỹ năng
 export const skills = [
-  { category: "Backend", icon: Server, items: ["Spring Boot", "Node.js", "RabbitMQ", "JWT"] },
-  { category: "Databases", icon: Database, items: ["MySQL", "PostgreSQL", "MongoDB", "Redis"] },
-  { category: "DevOps", icon: Terminal, items: ["Docker Swarm", "Git", "CI/CD", "Linux"] }
+  { category: "Frameworks", icon: Server, items: ["Spring Boot", "Node.js", "ReactJS", ".NET"] },
+  { 
+    category: "Languages & Core",
+    icon: Code2Icon, 
+    items: ["Java", "JavaScript","Python", "Dart", "C#" ] 
+  },
+  { category: "Databases", icon: Database, items: ["MySQL", "SQL Server", "MongoDB", "Redis"] },
+  { category: "DevOps", icon: Terminal, items: ["Docker Swarm", "Git", "Postman", "Linux"] },
 ];
 
 // Danh sách kinh nghiệm 'experience' (Để fix lỗi ở Experience.tsx)
@@ -56,8 +61,8 @@ export const projects: Project[] = [
     fullDesc: "Lead Full-stack Developer. Tích hợp AI Gemini và Google Health Connect để theo dõi chỉ số sinh tồn bệnh nhân.",
     techStack: ["Flutter", "Node.js", "Gemini API", "Render"],
     role: "Lead Full-stack Developer",
-    features: ["Theo dõi chỉ số sinh tồn", "Chatbot AI", "Health Connect Integration"],
-    githubUrl: "https://github.com/quocthinhthan",
+    features: ["feat.iot", "feat.ai_chat", "feat.health_connect"],
+    githubUrl: "https://github.com/quocthinhthan/PentaPulse-Health-System",
   },
   {
     id: "renthub",
@@ -66,8 +71,8 @@ export const projects: Project[] = [
     fullDesc: "Hệ thống cho thuê đồ dùng sử dụng RabbitMQ và Docker Swarm để đảm bảo khả năng mở rộng.",
     techStack: ["Node.js", "RabbitMQ", "Docker Swarm", "Redis"],
     role: "Backend Developer",
-    features: ["Event-driven", "High Availability", "Microservices concept"],
-    githubUrl: "https://github.com/quocthinhthan",
+    features: ["feat.event_driven", "feat.high_availability", "feat.microservices"],
+    githubUrl: "https://github.com/quocthinhthan/Rental-P2P-MVP",
   },
   {
     id: "telescope",
@@ -76,8 +81,8 @@ export const projects: Project[] = [
     fullDesc: "Xây dựng Backend hoàn chỉnh với Spring Boot, Spring Security và JWT cho việc bảo mật.",
     techStack: ["Java", "Spring Boot", "MySQL", "JWT"],
     role: "Backend Developer",
-    features: ["Auth", "Cart logic", "Order management"],
-    githubUrl: "https://github.com/quocthinhthan/TelescopeStore",
+    features: ["feat.auth", "feat.cart", "feat.order_mgmt"],
+    githubUrl: "https://github.com/quocthinhthan/Telescope-Store-ECommerce",
   },
   {
     id: "buffet-order-system",
@@ -86,11 +91,7 @@ export const projects: Project[] = [
     fullDesc: "Xây dựng toàn bộ hệ thống Backend bằng FastAPI để phục vụ cho ứng dụng gọi món tại bàn. Triển khai API lên Railway để hỗ trợ đội ngũ phát triển Frontend đa nền tảng.",
     techStack: ["FastAPI", "MySQL", "Railway", "Flutter"],
     role: "Backend Developer",
-    features: [
-      "Thiết kế và xây dựng Full Backend API",
-      "Quản lý cơ sở dữ liệu quan hệ MySQL",
-      "Triển khai và quản trị API trên nền tảng Cloud (Railway)"
-    ],
+    features: ["feat.backend_api", "feat.database", "feat.cloud_deploy"],
     githubUrl: "https://github.com/quocthinhthan",
   },
   {
@@ -100,11 +101,7 @@ export const projects: Project[] = [
     fullDesc: "Phát triển một công cụ chạy trên Kali Linux có khả năng phát hiện các điểm truy cập WiFi giả mạo dựa trên địa chỉ MAC và thực hiện ngắt kết nối trái phép để bảo vệ người dùng.",
     techStack: ["Python", "Flask API", "Kali Linux", "Network Protocol"],
     role: "Full-stack Developer (Solo Project)",
-    features: [
-      "Phát hiện Access Point giả mạo dựa trên MAC Address",
-      "Tự động gửi gói tin deauthentication để bảo mật kết nối",
-      "Giao diện quản lý log và cảnh báo thời gian thực qua Flask API" 
-    ],
+    features: ["feat.mac_detect", "feat.deauth", "feat.realtime_log"],
     githubUrl: "https://github.com/quocthinhthan",
   }
   // Thêm các dự án khác vào đây...
