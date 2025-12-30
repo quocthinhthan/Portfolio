@@ -47,7 +47,8 @@ export default function Contact() {
             </a>
         </div>
 
-        <motion.a
+        {/* Hiding temporary CV download button  */}
+        {/* <motion.a
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           href="/cv.pdf"
@@ -55,7 +56,8 @@ export default function Contact() {
           className="inline-flex items-center gap-2 px-8 py-4 bg-white text-black font-bold rounded-full hover:bg-slate-200 transition-all shadow-[0_0_20px_rgba(255,255,255,0.2)]"
         >
           <FileText size={20} /> {t("contact.downloadCv")}
-        </motion.a>
+        </motion.a> */}
+
       </motion.div>
     </section>
   );

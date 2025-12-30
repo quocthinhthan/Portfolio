@@ -6,10 +6,19 @@ import ClientShell from "@/components/ClientShell";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Thân Quốc Thịnh | Backend Developer Portfolio",
+  title: "Thân Quốc Thịnh | Portfolio",
   description:
-    "Portfolio cá nhân của Thân Quốc Thịnh - Backend Developer / Software Engineer",
+    "Portfolio cá nhân của Thân Quốc Thịnh - Backend Developer/Software Engineer",
+  icons: {
+    icon: [
+      { url: "/favicon.png", type: "image/png" },
+      { url: "/favicon.ico", type: "image/x-icon" }
+    ],
+    apple: "/apple-touch-icon.png",
+    shortcut: "/favicon.png"
+  }
 };
+
 
 export default function RootLayout({
   children,
