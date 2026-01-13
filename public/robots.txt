@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://thanquocthinh.id.vn
+
+# Sitemaps
+Sitemap: https://thanquocthinh.id.vn/sitemap.xml
