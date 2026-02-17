@@ -27,6 +27,20 @@ export const metadata: Metadata = {
     siteName: "Than Quoc Thinh Portfolio",
     locale: "vi_VN",
     type: "website",
+    images: [
+      {
+        url: "/about_avatar1.jpg", 
+        width: 1200,
+        height: 630,
+        alt: "Thân Quốc Thịnh Portfolio Preview",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Thân Quốc Thịnh | Software Engineer",
+    description: "Portfolio cá nhân của Thân Quốc Thịnh",
+    images: ["/about_avatar1.jpg"], 
   },
   icons: {
     icon: [
