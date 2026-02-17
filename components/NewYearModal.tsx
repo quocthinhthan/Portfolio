@@ -47,9 +47,9 @@ const NewYearModal = () => {
             </h2>
             
             <p className="text-slate-300 leading-relaxed mb-6">
-              Năm mới Giáp Thìn 2026, chúc mọi người một năm tràn đầy năng lượng, 
-              <span className="text-yellow-400"> "Logic vững vàng, Bug hàng hiếm gặp"</span>. 
-              Hy vọng mọi kế hoạch và dự án của bạn đều sẽ "Deploy" thành công rực rỡ!
+              Năm mới Bính Ngọ 2026, chúc bạn luôn giữ được sự cân bằng và bình an trong mọi hành trình. 
+              Mong rằng mỗi bước đi sắp tới đều có được <span className="text-yellow-400 font-semibold">"logic sáng suốt"</span> của trí tuệ và <span className="text-yellow-400 font-semibold">"năng lượng mạnh mẽ"</span> của niềm đam mê. 
+              Chúc một năm hanh thông, vạn sự như ý!
             </p>
 
             <button

@@ -29,9 +29,9 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: "/about_avatar1.jpg", 
+        url: "/avatar_share.jpg", 
         width: 1200,
-        height: 630,
+        height: 850,
         alt: "Thân Quốc Thịnh Portfolio Preview",
       },
     ],
@@ -40,7 +40,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Thân Quốc Thịnh | Software Engineer",
     description: "Portfolio cá nhân của Thân Quốc Thịnh",
-    images: ["/about_avatar1.jpg"], 
+    images: ["/avatar_share.jpg"], 
   },
   icons: {
     icon: [
