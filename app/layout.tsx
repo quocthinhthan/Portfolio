@@ -2,13 +2,12 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import ClientShell from "@/components/ClientShell";
-
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Thân Quốc Thịnh | Software Engineer Portfolio",
   description:
-    "Portfolio của Thân Quốc Thịnh – sinh viên Kỹ thuật Phần mềm, Web Developer với Next.js, React, Flutter, Backend.",
+    "Portfolio của Thân Quốc Thịnh – sinh viên Kỹ thuật Phần mềm tại TDTU, Web Developer với Next.js, React, Flutter, Backend.",
   keywords: [
     "Thân Quốc Thịnh",
     "Than Quoc Thinh",
@@ -39,8 +38,6 @@ export const metadata: Metadata = {
   }
 };
 
-
-
 export default function RootLayout({
   children,
 }: {
@@ -49,25 +46,28 @@ export default function RootLayout({
   return (
     <html lang="vi" className="scroll-smooth" suppressHydrationWarning>
       <body className={inter.className}>
+        
         <ClientShell>{children}</ClientShell>
+
+        {/* Đã di chuyển script vào bên trong body */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Person",
+              name: "Thân Quốc Thịnh",
+              url: "https://thanquocthinh.id.vn",
+              jobTitle: "Software Engineer",
+              knowsAbout: ["Business Analysis", "Springboot", "Node.js", "React", "Flutter", "Backend", "Microservices"],
+              sameAs: [
+                "https://github.com/your-github", // Đừng quên thay link thật của Thịnh vào đây nhé!
+                "https://linkedin.com/in/your-linkedin"
+              ]
+            })
+          }}
+        />
       </body>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "Person",
-            name: "Thân Quốc Thịnh",
-            url: "https://thanquocthinh.id.vn",
-            jobTitle: "Software Engineer",
-            knowsAbout: ["Business Analysis","Springboot", "Node.js" , "React", "Flutter", "Backend", "Microservices"],
-            sameAs: [
-              "https://github.com/your-github",
-              "https://linkedin.com/in/your-linkedin"
-            ]
-          })
-        }}
-      />
     </html>
   );
 }
