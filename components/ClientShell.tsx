@@ -45,6 +45,7 @@ function ShellInner({ children }: { children: React.ReactNode }) {
     { href: "#about", label: "nav.about" },
     { href: "#projects", label: "nav.projects" },
     { href: "#skills", label: "nav.skills" },
+    { href: "#achievements", label: "nav.achievements" },
     { href: "#contact", label: "nav.contact" },
   ];
 

@@ -11,8 +11,8 @@ export default function Experience() {
   const { t } = useI18n();
 
   const expData = [
-    { id: "tdtu", type: "education", ...experience[0] },
-    { id: "intern", type: "work", ...experience[1] }
+    { id: "mebisoft", type: "work", ...experience[0] },
+    { id: "tdtu", type: "education", ...experience[1] }
   ];
 
   return (

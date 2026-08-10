@@ -12,6 +12,7 @@ export const dictionaries = {
     "nav.contact": "Liên Hệ",     // 🟢 Mới
 
     "hero.badge": "Sẵn sàng thực tập Backend",
+    "nav.achievements": "Thành Tựu",
     "hero.cta.projects": "Xem Dự Án",
     "hero.cta.contact": "Liên Hệ",
 
@@ -31,9 +32,21 @@ export const dictionaries = {
     "exp.tdtu.title": "Sinh viên Kỹ thuật Phần mềm",
     "exp.tdtu.company": "Đại học Tôn Đức Thắng",
     "exp.tdtu.desc": "GPA hiện tại: 8.32/10. Hoàn thành hơn 12 dự án từ học thuật đến thực tế.",
+    "exp.mebisoft.title": "Đang làm việc",
+    "exp.mebisoft.company": "Công ty Cổ phần Mebisoft (Mebisoft JSC)",
+    "exp.mebisoft.desc": "Làm việc tại Mebisoft JSC từ tháng 03/2026 đến nay.",
     "exp.intern.title": "Ứng viên Thực tập Backend",
     "exp.intern.company": "Đang tìm kiếm cơ hội",
     "exp.intern.desc": "Đang chuẩn bị CV và kiến thức chuyên sâu để ứng tuyển vị trí thực tập/fresher Backend.",
+
+    "achievements.label": "Achievement Log",
+    "achievements.title": "Chứng Chỉ & Giải Thưởng",
+    "achievements.description": "Những dấu mốc đáng nhớ trong hành trình học tập và xây dựng sản phẩm.",
+    "achievements.awards": "Giải thưởng",
+    "achievements.certificates": "Kho chứng chỉ",
+    "achievements.certificates.empty": "Đang bổ sung những chứng nhận tiếp theo.",
+    "achievements.pentapulse.title": "Giải Nhì Cuộc thi Startup khoa Dược",
+    "achievements.pentapulse.description": "PentaPulse — giải pháp theo dõi suy tim mạn, từ ý tưởng đến sản phẩm full-stack.",
 
     // =========================================================
     // 🟢 CẬP NHẬT PHẦN PROJECTS CHO GIAO DIỆN MỚI
@@ -124,6 +137,7 @@ export const dictionaries = {
     "nav.contact": "Contact",     
 
     "hero.badge": "Open For Backend Internship",
+    "nav.achievements": "Achievements",
     "hero.cta.projects": "View Projects",
     "hero.cta.contact": "Contact Me",
 
@@ -142,9 +156,21 @@ export const dictionaries = {
     "exp.tdtu.title": "Software Engineering Student",
     "exp.tdtu.company": "Ton Duc Thang University",
     "exp.tdtu.desc": "Current GPA: 8.32/10. Completed 12+ projects ranging from academic to practical applications.",
+    "exp.mebisoft.title": "Currently Working",
+    "exp.mebisoft.company": "Mebisoft Joint Stock Company (Mebisoft JSC)",
+    "exp.mebisoft.desc": "Working at Mebisoft JSC since March 2026.",
     "exp.intern.title": "Backend Intern Candidate",
     "exp.intern.company": "Searching for Opportunities",
     "exp.intern.desc": "Preparing technical knowledge and projects for Backend internship/fresher roles.",
+
+    "achievements.label": "Achievement Log",
+    "achievements.title": "Certificates & Awards",
+    "achievements.description": "Meaningful milestones from my learning and product-building journey.",
+    "achievements.awards": "Awards",
+    "achievements.certificates": "Certificate Vault",
+    "achievements.certificates.empty": "New credentials will be added here.",
+    "achievements.pentapulse.title": "Second Prize — Pharmacy Faculty Startup Competition",
+    "achievements.pentapulse.description": "PentaPulse — a chronic heart-failure monitoring solution, built from idea to full-stack product.",
 
     // =========================================================
     // 🟢 UPDATED PROJECTS SECTION FOR NEW UI

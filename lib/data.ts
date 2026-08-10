@@ -39,20 +39,24 @@ export const skills = [
 // Danh sách kinh nghiệm 'experience' (Để fix lỗi ở Experience.tsx)
 export const experience = [
   {
-    year: "2022 - 2026",
-    title: "Software Engineering Student",
-    company: "Ton Duc Thang University",
+    year: "03/2026 - Present",
+    title: "Currently Working",
+    company: "Mebisoft JSC",
     description: "GPA hiện tại: 8.32/10. Hoàn thành hơn 12 dự án từ học thuật đến thực tế.",
   },
   {
-    year: "12/2025",
-    title: "Backend Intern Candidate",
-    company: "Searching for Opportunities",
+    year: "2022 - 2026",
+    title: "Software Engineering Student",
+    company: "Ton Duc Thang University",
     description: "Đang chuẩn bị CV và kiến thức để ứng tuyển vị trí thực tập Backend.",
   }
 ];
 
 // Danh sách dự án 'projects'
+export const achievements = [
+  { id: "pentapulse", type: "award" as const, year: "2025" },
+];
+
 export const projects: Project[] = [
   {
     id: "pentapulse",
