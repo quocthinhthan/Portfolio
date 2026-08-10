@@ -127,7 +127,7 @@ export const dictionaries = {
     "hero.cta.projects": "View Projects",
     "hero.cta.contact": "Contact Me",
 
-    "personal.name": "Thinh Quoc Than",
+    "personal.name": "Than Quoc Thinh",
     "personal.role": "Backend Developer | Software Engineering Student",
     "personal.description":
       "Final-year Software Engineering student at Ton Duc Thang University (GPA 8.32/10). Focused on backend systems, event-driven architecture, and Docker.",

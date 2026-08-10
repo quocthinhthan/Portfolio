@@ -3,10 +3,11 @@
 import { useState } from "react";
 import { motion, useScroll, useMotionValueEvent } from "framer-motion";
 import { I18nProvider, useI18n } from "@/components/I18nProvider";
-import { ThemeProvider } from "@/components/ThemeProvider";
+import { ThemeProvider, useTheme } from "@/components/ThemeProvider";
+import type { I18nKey } from "@/lib/i18n";
 import CursorGlow from "@/components/ui/CursorGlow";
 import ParallaxIcons from "@/components/ui/ParallaxIcons";
-import { Globe } from "lucide-react";
+import { Globe, Moon, Sun } from "lucide-react";
 
 export default function ClientShell({
   children,
@@ -26,6 +27,7 @@ export default function ClientShell({
 
 function ShellInner({ children }: { children: React.ReactNode }) {
   const { lang, setLang, t } = useI18n();
+  const { theme, toggleTheme } = useTheme();
   const [hidden, setHidden] = useState(false);
   const { scrollY } = useScroll();
 
@@ -79,7 +81,7 @@ function ShellInner({ children }: { children: React.ReactNode }) {
                 className="relative px-5 py-2 text-base font-medium text-slate-300 hover:text-white transition-colors group"
               >
                 {/* Text menu được dịch */}
-                {t(link.label as any)}
+                {t(link.label as I18nKey)}
                 
                 {/* Hiệu ứng gạch chân phát sáng khi hover */}
                 <span className="absolute inset-x-0 -bottom-px h-px w-full origin-left scale-x-0 bg-gradient-to-r from-sky-500/0 via-sky-500 to-sky-500/0 transition-transform duration-300 group-hover:scale-x-100" />
@@ -89,8 +91,18 @@ function ShellInner({ children }: { children: React.ReactNode }) {
           </nav>
 
           {/* Nút đổi ngôn ngữ */}
-          <div className="flex items-center">
+          <div className="flex items-center gap-2">
             <button
+              type="button"
+              onClick={toggleTheme}
+              aria-label={theme === "dark" ? t("nav.theme.light") : t("nav.theme.dark")}
+              title={theme === "dark" ? t("nav.theme.light") : t("nav.theme.dark")}
+              className="flex items-center justify-center size-9 rounded-full text-xs font-bold border border-slate-700 bg-slate-900/50 text-slate-300 hover:border-sky-500 hover:text-sky-400 hover:bg-sky-500/10 transition-all duration-300"
+            >
+              {theme === "dark" ? <Sun size={16} /> : <Moon size={16} />}
+            </button>
+            <button
+              type="button"
               onClick={() => setLang(lang === "vi" ? "en" : "vi")}
               className="flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold border border-slate-700 bg-slate-900/50 text-slate-300 hover:border-sky-500 hover:text-sky-400 hover:bg-sky-500/10 transition-all duration-300 group"
             >

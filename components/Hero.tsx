@@ -72,7 +72,7 @@ export default function Hero() {
           transition={{ delay: 0.2 }}
           className="mb-8"
         >
-          <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-slate-700/50 bg-slate-900/40 backdrop-blur-md text-sky-100 text-xs font-bold uppercase tracking-widest shadow-lg">
+          <span className="hero-badge inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-slate-700/50 bg-slate-900/40 backdrop-blur-md text-sky-100 text-xs font-bold uppercase tracking-widest shadow-lg">
             <span className="relative flex h-2 w-2">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
@@ -88,7 +88,7 @@ export default function Hero() {
           transition={{ delay: 0.3 }}
           className="text-5xl md:text-7xl font-black mb-4 tracking-tighter"
         >
-          <span className="bg-clip-text text-transparent bg-gradient-to-b from-white via-slate-100 to-slate-500 drop-shadow-sm">
+          <span className="hero-name bg-clip-text text-transparent bg-gradient-to-b from-white via-slate-100 to-slate-500 drop-shadow-sm">
             {t("personal.name")} 
           </span>
         </motion.h1>
