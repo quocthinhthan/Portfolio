@@ -18,31 +18,31 @@ export default function Contact() {
         transition={{ duration: 0.6 }}
         className="max-w-4xl mx-auto"
       >
-        <h2 className="text-4xl font-bold mb-6 text-white">{t("contact.title")}</h2>
-        <p className="text-slate-400 mb-12 text-lg leading-relaxed max-w-2xl mx-auto">
+        <h2 className="text-4xl font-bold mb-6 text-slate-900 dark:text-white">{t("contact.title")}</h2>
+        <p className="text-slate-600 dark:text-slate-400 mb-12 text-lg leading-relaxed max-w-2xl mx-auto">
           {t("contact.desc")}
         </p>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-2xl mx-auto mb-12">
             <a href={`mailto:${personalInfo.email}`} 
-               className="flex items-center gap-4 p-4 rounded-2xl border border-slate-800 bg-slate-900/50 hover:bg-slate-800 transition-all hover:border-primary/50 group">
-                <div className="p-3 rounded-full bg-primary/10 text-primary group-hover:bg-primary group-hover:text-black transition-colors">
+               className="flex items-center gap-4 p-4 rounded-2xl border border-slate-200/80 dark:border-slate-800 bg-white dark:bg-slate-900/50 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all hover:border-sky-500/50 shadow-md dark:shadow-none group">
+                <div className="p-3 rounded-full bg-sky-500/10 text-sky-600 dark:text-sky-400 group-hover:bg-sky-600 dark:group-hover:bg-sky-400 group-hover:text-white dark:group-hover:text-black transition-colors">
                     <Mail size={20} />
                 </div>
-                <div className="text-left">
-                    <div className="text-xs text-slate-500 font-mono uppercase">Email</div>
-                    <div className="text-slate-200 text-sm font-medium">{personalInfo.email}</div>
+                <div className="text-left min-w-0 flex-1">
+                    <div className="text-xs text-slate-500 dark:text-slate-500 font-mono uppercase">Email</div>
+                    <div className="text-slate-800 dark:text-slate-200 text-sm font-medium truncate">{personalInfo.email}</div>
                 </div>
             </a>
 
              <a href={personalInfo.linkedin} target="_blank"
-               className="flex items-center gap-4 p-4 rounded-2xl border border-slate-800 bg-slate-900/50 hover:bg-slate-800 transition-all hover:border-blue-500/50 group">
-                <div className="p-3 rounded-full bg-blue-500/10 text-blue-500 group-hover:bg-blue-500 group-hover:text-white transition-colors">
+               className="flex items-center gap-4 p-4 rounded-2xl border border-slate-200/80 dark:border-slate-800 bg-white dark:bg-slate-900/50 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all hover:border-blue-500/50 shadow-md dark:shadow-none group">
+                <div className="p-3 rounded-full bg-blue-500/10 text-blue-600 dark:text-blue-500 group-hover:bg-blue-600 dark:group-hover:bg-blue-500 group-hover:text-white transition-colors">
                     <Linkedin size={20} />
                 </div>
                 <div className="text-left">
-                    <div className="text-xs text-slate-500 font-mono uppercase">LinkedIn</div>
-                    <div className="text-slate-200 text-sm font-medium">Connect with me</div>
+                    <div className="text-xs text-slate-500 dark:text-slate-500 font-mono uppercase">LinkedIn</div>
+                    <div className="text-slate-800 dark:text-slate-200 text-sm font-medium">Connect with me</div>
                 </div>
             </a>
         </div>

@@ -4,9 +4,6 @@
 import { useRef, useState } from "react";
 import {
   motion,
-  useScroll,
-  useTransform,
-  MotionValue,
   useMotionValue,
   useSpring,
   AnimatePresence
@@ -16,10 +13,10 @@ import { projects, Project } from "@/lib/data";
 import {
   Github, ExternalLink, Terminal, Code2, Cpu,
   Database, Server, Cloud, Lock, Brain, HeartPulse,
-  Activity, Zap, ShieldCheck, Globe, ArrowRight, X
+  Activity, Zap, ShieldCheck, Globe, ArrowRight, X,
+  ChevronLeft, ChevronRight, MoveHorizontal
 } from "lucide-react";
 import { useI18n } from "@/components/I18nProvider";
-// 🟢 Import ParallaxIcons
 import ParallaxIcons from "@/components/ui/ParallaxIcons"; 
 
 // ===============================
@@ -50,105 +47,188 @@ const getFeatureIcon = (feature: string) => {
 // ===============================
 export default function Projects() {
   const { t } = useI18n();
-  const targetRef = useRef<HTMLDivElement | null>(null);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [activeCardIndex, setActiveCardIndex] = useState(0);
 
-  const { scrollYProgress } = useScroll({
-    target: targetRef,
-    offset: ["start start", "end end"],
-  });
+  const scrollRef = useRef<HTMLDivElement | null>(null);
+  const [isMouseDown, setIsMouseDown] = useState(false);
+  const [startX, setStartX] = useState(0);
+  const [scrollLeftState, setScrollLeftState] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
 
-  const x = useTransform(scrollYProgress, [0, 1], ["0%", "-80%"]);
+  const totalCards = projects.length + 1; // Projects + GitHub CTA Card
+
+  // Scroll directly to a specific card aligned with header
+  const scrollToCard = (index: number) => {
+    if (!scrollRef.current) return;
+    const cards = Array.from(scrollRef.current.children) as HTMLElement[];
+    if (!cards || cards.length === 0) return;
+
+    const clampedIndex = Math.max(0, Math.min(index, cards.length - 1));
+    const targetCard = cards[clampedIndex];
+    if (!targetCard) return;
+
+    const container = scrollRef.current;
+
+    if (clampedIndex === 0) {
+      container.scrollTo({ left: 0, behavior: "smooth" });
+    } else {
+      const cardLeft = targetCard.offsetLeft;
+      const paddingLeft = parseFloat(getComputedStyle(container).paddingLeft) || 0;
+      container.scrollTo({
+        left: Math.max(0, cardLeft - paddingLeft),
+        behavior: "smooth"
+      });
+    }
+
+    setActiveCardIndex(clampedIndex);
+  };
+
+  const handleNextCard = () => {
+    scrollToCard(activeCardIndex + 1);
+  };
+
+  const handlePrevCard = () => {
+    scrollToCard(activeCardIndex - 1);
+  };
+
+  // Sync activeCardIndex on manual scroll / touch swipe / drag release
+  const handleScroll = () => {
+    if (!scrollRef.current || isMouseDown) return;
+    const container = scrollRef.current;
+    const scrollLeft = container.scrollLeft;
+    const paddingLeft = parseFloat(getComputedStyle(container).paddingLeft) || 0;
+    const cards = Array.from(container.children) as HTMLElement[];
+
+    let closestIndex = 0;
+    let minDistance = Infinity;
+
+    cards.forEach((card, i) => {
+      const distance = Math.abs((card.offsetLeft - paddingLeft) - scrollLeft);
+      if (distance < minDistance) {
+        minDistance = distance;
+        closestIndex = i;
+      }
+    });
+
+    setActiveCardIndex(closestIndex);
+  };
+
+  // Drag-to-scroll Mouse Event Handlers
+  const handleMouseDown = (e: React.MouseEvent) => {
+    if (!scrollRef.current) return;
+    setIsMouseDown(true);
+    setIsDragging(false);
+    setStartX(e.pageX - scrollRef.current.offsetLeft);
+    setScrollLeftState(scrollRef.current.scrollLeft);
+  };
+
+  const handleMouseLeave = () => {
+    setIsMouseDown(false);
+  };
+
+  const handleMouseUp = () => {
+    setIsMouseDown(false);
+  };
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!isMouseDown || !scrollRef.current) return;
+    e.preventDefault();
+    const x = e.pageX - scrollRef.current.offsetLeft;
+    const walk = (x - startX) * 1.6; // Scroll speed multiplier
+    if (Math.abs(walk) > 6) {
+      setIsDragging(true);
+    }
+    scrollRef.current.scrollLeft = scrollLeftState - walk;
+  };
 
   return (
     <>
       <section
-        ref={targetRef}
         id="projects"
-        className="relative h-[500vh] bg-[#020617] overflow-clip"
+        className="relative py-24 md:py-32 bg-slate-50 dark:bg-[#020617] overflow-hidden transition-colors duration-300"
       >
         {/* Parallax Icons */}
-        <div className="absolute inset-0 z-0 opacity-40">
+        <div className="absolute inset-0 z-0 opacity-40 pointer-events-none">
            <ParallaxIcons />
         </div>
 
-        {/* Background Gradients */}
-        <div className="absolute inset-0 pointer-events-none z-0">
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(56,189,248,0.05),transparent_60%)]" />
-          <div
-            className="absolute inset-0 opacity-[0.05]"
-            style={{
-              backgroundImage: `linear-gradient(#0f172a 1px, transparent 1px), linear-gradient(90deg,#0f172a 1px, transparent 1px)`,
-              backgroundSize: "40px 40px",
-            }}
-          />
+        {/* SECTION HEADER */}
+        <div className="max-w-7xl mx-auto px-4 md:px-8 mb-10 relative z-20 flex flex-col md:flex-row md:items-end justify-between gap-6">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <div className="flex items-center gap-2 text-sky-600 dark:text-sky-500 font-mono text-sm tracking-[0.2em] uppercase mb-3">
+              <Terminal size={16} />
+              <span>{t("projects.section.label" as any) || "Engineering Output"}</span>
+            </div>
+
+            <h2 className="text-4xl sm:text-5xl md:text-6xl font-black text-slate-900 dark:text-white tracking-tighter">
+              {t("projects.title.line1" as any) || "Featured"}{" "}
+              <span className="text-sky-600 dark:text-sky-500">{t("projects.title.line2" as any) || "Projects"}.</span>
+            </h2>
+
+            <p className="mt-3 text-slate-600 dark:text-slate-400 text-base md:text-lg max-w-xl leading-relaxed">
+              {t("projects.intro.desc" as any) || "Tuyển tập các hệ thống Backend được xây dựng với sự chú trọng tối đa vào khả năng mở rộng."}
+            </p>
+          </motion.div>
+
+          {/* ARROW NAVIGATION CONTROLS */}
+          <div className="flex items-center justify-end gap-2">
+            <button
+              type="button"
+              onClick={handlePrevCard}
+              disabled={activeCardIndex === 0}
+              aria-label="Previous project card"
+              className="p-3 rounded-full bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-white/10 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:border-sky-500 hover:bg-sky-50 dark:hover:bg-sky-500/10 disabled:opacity-40 disabled:hover:border-slate-200 dark:disabled:hover:border-white/10 transition-all active:scale-95 shadow-sm dark:shadow-md cursor-pointer disabled:cursor-not-allowed"
+            >
+              <ChevronLeft size={20} />
+            </button>
+            <button
+              type="button"
+              onClick={handleNextCard}
+              disabled={activeCardIndex === totalCards - 1}
+              aria-label="Next project card"
+              className="p-3 rounded-full bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-white/10 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:border-sky-500 hover:bg-sky-50 dark:hover:bg-sky-500/10 disabled:opacity-40 disabled:hover:border-slate-200 dark:disabled:hover:border-white/10 transition-all active:scale-95 shadow-sm dark:shadow-md cursor-pointer disabled:cursor-not-allowed"
+            >
+              <ChevronRight size={20} />
+            </button>
+          </div>
         </div>
 
-        <div className="sticky top-0 h-screen flex items-center overflow-hidden perspective-[1000px] z-10">
-
-          {/* LEFT SIDE TITLE */}
-          <div className="hidden md:flex w-[30%] h-full flex-col justify-center px-12 lg:px-16 pointer-events-none select-none relative z-20">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              className="space-y-8"
-            >
-              <div className="flex items-center gap-3 text-sky-500 font-mono text-sm tracking-[0.2em] uppercase">
-                <Terminal size={16} />
-                {/* 🟢 i18n applied */}
-                <span>{t("projects.section.label" as any) || "Engineering Output"}</span>
-              </div>
-
-              <h2 className="text-6xl lg:text-8xl font-black text-white leading-none tracking-tighter">
-                {/* 🟢 i18n applied (Tách dòng để giữ layout) */}
-                {t("projects.title.line1" as any) || "Featured"}<br />
-                {t("projects.title.line2" as any) || "Projects"}
-                <span className="text-sky-500">.</span>
-              </h2>
-
-              <div className="h-1 w-20 bg-gradient-to-r from-sky-500 to-violet-500 rounded-full" />
-
-              <p className="text-slate-400 text-lg max-w-sm font-light leading-relaxed">
-                {t("projects.intro.desc" as any) || "Tuyển tập các hệ thống Backend được xây dựng với sự chú trọng tối đa vào khả năng mở rộng."}
-              </p>
-            </motion.div>
-          </div>
-
-          {/* MOVING TRACK */}
-          <div className="w-full md:w-[70%] h-full flex items-center pl-8 md:pl-30">
-            <motion.div style={{ x }} className="flex gap-24 pr-[10vw] py-10">
-              {projects.map((project, index) => (
-                <ProjectCard
-                  key={project.id}
-                  project={project}
-                  t={t}
-                  index={index}
-                  total={projects.length}
-                  progress={scrollYProgress}
-                  onOpen={() => setSelectedProject(project)} 
-                />
-              ))}
-
-              <GithubCtaCard />
-            </motion.div>
-          </div>
-
-          {/* PROGRESS LINE */}
-          <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-slate-900/50">
-            <motion.div
-              style={{ scaleX: scrollYProgress, transformOrigin: "left" }}
-              className="h-full bg-gradient-to-r from-sky-500 via-violet-500 to-sky-500"
+        {/* PROJECTS CAROUSEL (TRACK) */}
+        <div
+          ref={scrollRef}
+          onMouseDown={handleMouseDown}
+          onMouseLeave={handleMouseLeave}
+          onMouseUp={handleMouseUp}
+          onMouseMove={handleMouseMove}
+          onScroll={handleScroll}
+          className="relative z-10 w-full overflow-x-auto select-none cursor-grab active:cursor-grabbing py-4 flex gap-6 snap-x snap-mandatory px-[calc((100vw-85vw)/2)] sm:px-[calc((100vw-350px)/2)] lg:px-[calc((100vw-1280px)/2)]"
+        >
+          {projects.map((project, index) => (
+            <ProjectCard
+              key={project.id}
+              project={project}
+              t={t}
+              index={index}
+              onOpen={() => setSelectedProject(project)}
             />
-          </div>
+          ))}
+
+          {/* GitHub CTA Card */}
+          <GithubCtaCard />
         </div>
       </section>
 
-      {/* MODAL DETAIL */}
+      {/* Detail Modal */}
       <ProjectModal 
-        project={selectedProject} 
-        isOpen={!!selectedProject} 
-        onClose={() => setSelectedProject(null)} 
+        project={selectedProject}
+        isOpen={!!selectedProject}
+        onClose={() => setSelectedProject(null)}
         t={t}
       />
     </>
@@ -159,43 +239,13 @@ export default function Projects() {
 // PROJECT CARD
 // ===============================
 function ProjectCard({
-  project, t, index, total, progress, onOpen
+  project, t, index, onOpen
 }: {
   project: Project; 
   t: any; 
   index: number; 
-  total: number; 
-  progress: MotionValue<number>;
   onOpen: () => void;
 }) {
-  
-  // 1. Tính toán Range (Plateau Logic)
-  const step = 1 / total;
-  const start = (step * index) - 0.1;
-  const end = start + step + 0.3;
-  
-  const peakStart = start + (step * 0.2); 
-  const peakEnd = start + (step * 0.9);   
-
-  const range = [start, peakStart, peakEnd, end];
-
-  // 2. Transform Hooks
-  const zIndex = useTransform(progress, range, [1, 50, 50, 1]);
-  const scale = useTransform(progress, range, [0.85, 1.08, 1.08, 0.85]);
-  const opacity = useTransform(progress, range, [0.25, 1, 1, 0]);
-  const blur = useTransform(progress, range, ["blur(2px)", "blur(0px)", "blur(0px)", "blur(12px)"]);
-
-  const borderColor = useTransform(progress, range,
-    ["rgba(255,255,255,0.05)", "rgba(56,189,248,0.6)", "rgba(56,189,248,0.6)", "rgba(255,255,255,0.05)"]
-  );
-
-  const boxShadow = useTransform(progress, range,
-    ["none", "0 35px 80px -20px rgba(56,189,248,0.35)", "0 35px 80px -20px rgba(56,189,248,0.35)", "none"]
-  );
-
-  const innerLightOpacity = useTransform(progress, range, [0, 1, 1, 0]);
-
-  // 3. Tilt Effect
   const rotateX = useSpring(useMotionValue(0), { stiffness: 120, damping: 18 });
   const rotateY = useSpring(useMotionValue(0), { stiffness: 120, damping: 18 });
 
@@ -212,62 +262,57 @@ function ProjectCard({
 
   return (
     <motion.div
-      layoutId={`card-${project.id}`}
       onClick={onOpen}
       onMouseMove={handleMouseMove}
       onMouseLeave={resetTilt}
-      style={{ opacity, scale, zIndex, borderColor, boxShadow, rotateX, rotateY, filter: blur, willChange: "filter, transform" }}
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.5, delay: index * 0.1 }}
+      style={{ rotateX, rotateY }}
       className="
-        relative
-        w-[78vw] md:w-[48vw] lg:w-[42vw] h-[64vh] flex-shrink-0
-        rounded-[2.8rem] p-8 md:p-10 flex flex-col justify-between overflow-hidden
-        bg-[#0F172A] border-[1.5px] border-white/10
-        shadow-[0_20px_60px_-15px_rgba(0,0,0,0.65)]
-        cursor-pointer group
+        relative snap-start
+        w-[85vw] sm:w-[350px] lg:w-[calc((100%-3rem)/3)] min-h-[500px] md:min-h-[540px] flex-shrink-0
+        rounded-[2.2rem] md:rounded-[2.8rem] p-6 md:p-9 flex flex-col justify-between overflow-hidden
+        bg-white dark:bg-[#0F172A] border-[1.5px] border-slate-200 dark:border-white/10
+        shadow-lg dark:shadow-none
+        hover:border-sky-500/60 hover:shadow-[0_25px_60px_-15px_rgba(56,189,248,0.25)]
+        transition-all duration-300
+        cursor-pointer group select-none
       "
     >
-      <div className="absolute inset-0 opacity-[0.06] mix-blend-overlay pointer-events-none"
+      <div className="absolute inset-0 opacity-[0.04] dark:opacity-[0.06] mix-blend-overlay pointer-events-none"
            style={{ backgroundImage: `url(/noise.png)` }} />
 
-      <motion.div
-        style={{ opacity: innerLightOpacity }}
-        animate={{ x: ["-20%", "120%"] }}
-        transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute -inset-1 bg-[radial-gradient(circle_at_20%_-10%,rgba(56,189,248,0.25),transparent_60%)] pointer-events-none"
-      />
-
       <div className="relative z-10 pointer-events-none">
-        {/* Tags */}
-        <div className="flex flex-wrap gap-2 mb-6">
+        <div className="flex flex-wrap gap-2 mb-5">
           {project.techStack.slice(0, 3).map(tech => (
-            <span key={tech} className="pl-2 pr-3 py-1.5 text-[11px] font-bold uppercase tracking-wider rounded-full border border-white/10 flex items-center gap-2 bg-slate-800/80 text-sky-100">
+            <span key={tech} className="pl-2.5 pr-3 py-1.5 text-[11px] font-extrabold uppercase tracking-wider rounded-full border border-slate-900/10 dark:border-white/10 flex items-center gap-2 bg-slate-900 dark:bg-slate-800/80 text-white dark:text-sky-200 shadow-sm">
               {getTechIcon(tech)} {tech}
             </span>
           ))}
           {project.techStack.length > 3 && (
-             <span className="pl-2 pr-3 py-1.5 text-[11px] font-bold bg-slate-800/50 text-slate-400 rounded-full border border-white/5">
+             <span className="pl-2 pr-3 py-1.5 text-[11px] font-extrabold bg-slate-800 text-white dark:bg-slate-800/50 dark:text-slate-300 rounded-full border border-slate-900/10 dark:border-white/5">
                 +{project.techStack.length - 3}
              </span>
           )}
         </div>
 
-        <motion.h3 layoutId={`title-${project.id}`} className="text-4xl lg:text-5xl font-extrabold text-white mb-5 group-hover:text-sky-400 transition-colors">
+        <h3 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-slate-900 dark:text-white mb-4 group-hover:text-sky-600 dark:group-hover:text-sky-400 transition-colors">
           {t(`proj.${project.id}.title` as any)}
-        </motion.h3>
+        </h3>
 
-        <p className="text-slate-400 text-lg leading-relaxed pl-4 border-l-2 border-sky-500/30 line-clamp-3">
+        <p className="text-slate-700 dark:text-slate-300 text-base md:text-lg leading-relaxed pl-4 border-l-2 border-sky-500/50 line-clamp-3 font-medium">
           {t(`proj.${project.id}.short` as any) || "Mô tả dự án..."}
         </p>
         
-        {/* 🟢 i18n applied */}
-        <p className="mt-4 text-sm text-sky-500 font-bold underline decoration-sky-500/30 underline-offset-4 group-hover:text-sky-300">
-            {t("projects.card.view_details" as any) || "Click to view details →"}
+        <p className="mt-4 text-sm text-sky-600 dark:text-sky-400 font-bold underline decoration-sky-500/30 underline-offset-4 group-hover:text-sky-500 dark:group-hover:text-sky-300">
+            {t("projects.card.view_details" as any) || "Nhấn để xem chi tiết →"}
         </p>
 
-        {/* Features Preview */}
-        <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-4 opacity-80">
+        <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-3 opacity-90">
           {project.features.slice(0, 2).map((f, i) => (
-            <div key={i} className="flex items-start gap-3 text-slate-200 text-xs bg-white/5 p-3 rounded-xl border border-white/10">
+            <div key={i} className="flex items-start gap-2.5 text-slate-800 dark:text-slate-200 text-xs font-semibold bg-slate-100 dark:bg-white/5 p-2.5 rounded-xl border border-slate-200 dark:border-white/10 shadow-sm">
               {getFeatureIcon(f)}
               <span className="truncate">{t(f as any)}</span>
             </div>
@@ -275,15 +320,14 @@ function ProjectCard({
         </div>
       </div>
 
-      <div className="mt-auto flex gap-4 mt-8 pt-3 pb-2 border-t border-white/10 z-20">
+      <div className="mt-auto flex gap-3 mt-8 pt-3 pb-1 border-t border-slate-200 dark:border-white/10 z-20">
         <a 
           href={project.githubUrl} 
           target="_blank"
           onClick={(e) => e.stopPropagation()}
-          className="flex-1 py-4 flex items-center justify-center gap-3 rounded-2xl font-bold bg-white text-black hover:scale-[1.03] active:scale-95 transition-all shadow-xl"
+          className="flex-1 py-3.5 flex items-center justify-center gap-2 rounded-2xl font-bold bg-slate-900 dark:bg-white text-white dark:text-black text-sm hover:bg-sky-600 dark:hover:bg-slate-200 hover:scale-[1.03] active:scale-95 transition-all shadow-md"
         >
-          {/* 🟢 i18n applied */}
-          <Github size={20} /> {t("projects.btn.source" as any) || "Source"}
+          <Github size={18} /> {t("projects.btn.source" as any) || "Mã nguồn"}
         </a>
         
         {project.demoUrl && (
@@ -291,10 +335,9 @@ function ProjectCard({
             href={project.demoUrl} 
             target="_blank"
             onClick={(e) => e.stopPropagation()}
-            className="flex-1 py-4 flex items-center justify-center gap-3 rounded-2xl font-bold border border-white/10 bg-slate-900 text-white hover:bg-sky-600 hover:scale-[1.03] active:scale-95 transition-all"
+            className="flex-1 py-3.5 flex items-center justify-center gap-2 rounded-2xl font-bold border border-slate-300 dark:border-white/10 bg-slate-100 dark:bg-slate-900 text-slate-900 dark:text-white text-sm hover:bg-sky-600 hover:text-white hover:scale-[1.03] active:scale-95 transition-all"
           >
-            {/* 🟢 i18n applied */}
-            <ExternalLink size={20} /> {t("projects.btn.demo" as any) || "Demo"}
+            <ExternalLink size={18} /> {t("projects.btn.demo" as any) || "Demo"}
           </a>
         )}
       </div>
@@ -306,7 +349,6 @@ function ProjectCard({
 // GITHUB CTA CARD
 // ===============================
 function GithubCtaCard() {
-    // 🟢 Thêm hook useI18n vào đây (trước đó bị thiếu)
     const { t } = useI18n(); 
 
     const rotateX = useSpring(useMotionValue(0), { stiffness: 120, damping: 18 });
@@ -330,38 +372,38 @@ function GithubCtaCard() {
             onMouseMove={handleMouseMove}
             onMouseLeave={resetTilt}
             style={{ rotateX, rotateY }}
-            className="group relative w-[80vw] md:w-[35vw] h-[64vh] flex-shrink-0 perspective-[1000px] cursor-pointer"
+            className="group relative snap-start w-[85vw] sm:w-[350px] lg:w-[calc((100%-3rem)/3)] min-h-[500px] md:min-h-[540px] flex-shrink-0 perspective-[1000px] cursor-pointer select-none"
         >
              <div className="
-                w-full h-full rounded-[2.5rem]
-                bg-gradient-to-br from-[#0F172A] to-[#020617]
-                border-2 border-dashed border-slate-700
-                hover:border-sky-500 hover:bg-slate-900
+                w-full h-full rounded-[2.2rem] md:rounded-[2.5rem]
+                bg-gradient-to-br from-slate-100 to-white dark:from-[#0F172A] dark:to-[#020617]
+                border-2 border-dashed border-slate-300 dark:border-slate-700
+                hover:border-sky-500 dark:hover:border-sky-500 hover:bg-white dark:hover:bg-slate-900
                 transition-all duration-500
-                flex flex-col items-center justify-center text-center p-10
+                flex flex-col items-center justify-center text-center p-8 md:p-10
                 group-hover:scale-[1.02] group-hover:shadow-[0_0_50px_-10px_rgba(56,189,248,0.3)]
              ">
-                 <div className="mb-8 relative">
+                 <div className="mb-6 relative">
                     <div className="absolute inset-0 bg-sky-500 blur-[50px] opacity-0 group-hover:opacity-40 transition-opacity duration-500 rounded-full" />
-                    <Github size={90} className="text-slate-400 group-hover:text-white transition-colors duration-300 relative z-10" />
+                    <Github size={80} className="text-slate-700 dark:text-slate-400 group-hover:text-sky-600 dark:group-hover:text-white transition-colors duration-300 relative z-10" />
                  </div>
-                 <h3 className="text-4xl font-black text-white mb-4">
-                    {/* 🟢 i18n applied */}
+                 <h3 className="text-3xl md:text-4xl font-black text-slate-900 dark:text-white mb-4">
                     {t("projects.github.view_more" as any) || "View More"}<br/>
-                    {t("projects.github.on" as any) || "on"} <span className="text-sky-500">GitHub</span>
+                    <span className="text-sky-600 dark:text-sky-400">Repositories</span>
                  </h3>
-                 <div className="flex items-center gap-3 text-sky-400 font-bold uppercase tracking-widest text-xs group-hover:gap-5 transition-all bg-sky-500/10 px-6 py-3 rounded-full border border-sky-500/20">
-                    {/* 🟢 i18n applied */}
-                    <span>{t("projects.github.visit_profile" as any) || "Visit Profile"}</span>
-                    <ArrowRight size={16} />
-                 </div>
+                 <p className="text-slate-600 dark:text-slate-400 text-sm md:text-base max-w-xs mb-8">
+                    {t("projects.github.desc" as any) || "Explore all open-source projects, tools, and code samples on GitHub."}
+                 </p>
+                 <span className="inline-flex items-center gap-2 text-sm font-bold text-sky-600 dark:text-sky-400 group-hover:translate-x-1 transition-transform">
+                    github.com/quocthinhthan →
+                 </span>
              </div>
         </motion.a>
-    )
+    );
 }
 
 // ===============================
-// MODAL COMPONENT (MỚI)
+// PROJECT MODAL
 // ===============================
 function ProjectModal({ project, isOpen, onClose, t }: { project: Project | null, isOpen: boolean, onClose: () => void, t: any }) {
     if (!project) return null;
@@ -375,66 +417,65 @@ function ProjectModal({ project, isOpen, onClose, t }: { project: Project | null
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         onClick={onClose}
-                        className="absolute inset-0 bg-black/80 backdrop-blur-md"
+                        className="absolute inset-0 bg-black/60 dark:bg-black/80 backdrop-blur-md"
                     />
 
                     <motion.div
-                        layoutId={`card-${project.id}`}
+                        initial={{ opacity: 0, scale: 0.95, y: 10 }}
+                        animate={{ opacity: 1, scale: 1, y: 0 }}
+                        exit={{ opacity: 0, scale: 0.95, y: 10 }}
+                        transition={{ duration: 0.2, ease: "easeOut" }}
                         className="
                             relative w-full max-w-4xl max-h-[90vh] 
-                            bg-[#0B1121] border border-slate-700 rounded-[2rem] 
+                            bg-white dark:bg-[#0B1121] border border-slate-200 dark:border-slate-700 rounded-[2rem] 
                             shadow-2xl overflow-y-auto overflow-x-hidden
                             z-10 custom-scrollbar
                         "
                     >
                         <button 
+                            type="button"
                             onClick={onClose}
-                            className="absolute top-6 right-6 p-2 rounded-full bg-slate-800 text-white hover:bg-slate-700 hover:rotate-90 transition-all z-50"
+                            className="absolute top-6 right-6 p-2 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-white hover:bg-slate-200 dark:hover:bg-slate-700 hover:rotate-90 transition-all z-50"
                         >
                             <X size={24} />
                         </button>
 
-                        <div className="p-8 md:p-12">
-                             <div className="flex items-center gap-3 mb-6">
-                                <span className="text-5xl lg:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-500">
+                        <div className="p-6 md:p-12">
+                             <div className="flex items-center gap-3 mb-6 pr-8">
+                                <span className="text-3xl sm:text-4xl lg:text-6xl font-black text-slate-900 dark:text-transparent dark:bg-clip-text dark:bg-gradient-to-r dark:from-white dark:to-slate-500">
                                     {t(`proj.${project.id}.title` as any)}
                                 </span>
                              </div>
 
                              <div className="flex flex-wrap gap-2 mb-8">
                                 {project.techStack.map(tech => (
-                                    <span key={tech} className="px-3 py-1.5 text-xs font-bold uppercase rounded-full border border-white/10 bg-sky-500/10 text-sky-300">
+                                    <span key={tech} className="px-3 py-1.5 text-xs font-extrabold uppercase rounded-full border border-slate-900/10 dark:border-white/10 bg-slate-900 text-white dark:bg-sky-500/10 dark:text-sky-300">
                                         {tech}
                                     </span>
                                 ))}
                              </div>
 
-                             <div className="grid md:grid-cols-3 gap-10">
+                             <div className="grid md:grid-cols-3 gap-8 md:gap-10">
                                 <div className="md:col-span-2 space-y-6">
-                                    {/* 🟢 i18n applied */}
-                                    <h4 className="text-xl font-bold text-white flex items-center gap-2">
+                                    <h4 className="text-xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
                                         <Terminal className="text-sky-500" /> {t("projects.modal.description" as any) || "Description"}
                                     </h4>
-                                    {/* <p className="text-slate-300 leading-relaxed text-lg">
-                                        {t(`proj.${project.id}.full` as any) || "Mô tả chi tiết đang cập nhật..."}
-                                    </p> */}
                                     <div 
-                                      className="text-slate-300 leading-relaxed text-lg space-y-2"
+                                      className="text-slate-700 dark:text-slate-300 leading-relaxed text-base md:text-lg space-y-2"
                                       dangerouslySetInnerHTML={{ 
                                           __html: t(`proj.${project.id}.full` as any) || project.fullDesc 
                                       }}
                                     />
                                     
                                     <div className="pt-6">
-                                        {/* 🟢 i18n applied */}
-                                        <h4 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
-                                            <Zap className="text-yellow-400" /> {t("projects.modal.features" as any) || "Key Features"}
+                                        <h4 className="text-xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
+                                            <Zap className="text-amber-500 dark:text-yellow-400" /> {t("projects.modal.features" as any) || "Key Features"}
                                         </h4>
                                         <ul className="grid grid-cols-1 gap-3">
                                             {project.features.map((f, i) => (
-                                                <li key={i} className="flex items-start gap-3 p-4 rounded-xl bg-slate-900 border border-slate-800">
+                                                <li key={i} className="flex items-start gap-3 p-4 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
                                                     {getFeatureIcon(f)}
-                                                    <span className="text-slate-300">{t(f as any)}</span>
+                                                    <span className="text-slate-800 dark:text-slate-300 text-sm md:text-base font-medium">{t(f as any)}</span>
                                                 </li>
                                             ))}
                                         </ul>
@@ -442,31 +483,27 @@ function ProjectModal({ project, isOpen, onClose, t }: { project: Project | null
                                 </div>
 
                                 <div className="space-y-6">
-                                    <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800">
-                                        {/* 🟢 i18n applied */}
-                                        <h5 className="text-sm font-bold text-slate-500 uppercase tracking-widest mb-4">
+                                    <div className="p-6 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
+                                        <h5 className="text-sm font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-4">
                                             {t("projects.modal.links" as any) || "Project Links"}
                                         </h5>
                                         <div className="flex flex-col gap-3">
-                                            <a href={project.githubUrl} target="_blank" className="flex items-center justify-center gap-3 py-3 bg-white text-black font-bold rounded-xl hover:scale-105 transition-transform">
-                                                {/* 🟢 i18n applied */}
+                                            <a href={project.githubUrl} target="_blank" className="flex items-center justify-center gap-3 py-3 bg-slate-900 dark:bg-white text-white dark:text-black font-bold rounded-xl hover:scale-105 transition-transform shadow-md">
                                                 <Github size={18} /> {t("projects.btn.source_code" as any) || "Source Code"}
                                             </a>
                                             {project.demoUrl && (
                                                 <a href={project.demoUrl} target="_blank" className="flex items-center justify-center gap-3 py-3 bg-sky-600 text-white font-bold rounded-xl hover:bg-sky-500 transition-colors">
-                                                    {/* 🟢 i18n applied */}
                                                     <ExternalLink size={18} /> {t("projects.btn.live_demo" as any) || "Live Demo"}
                                                 </a>
                                             )}
                                         </div>
                                     </div>
                                     
-                                    <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800">
-                                        {/* 🟢 i18n applied */}
-                                        <h5 className="text-sm font-bold text-slate-500 uppercase tracking-widest mb-4">
+                                    <div className="p-6 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
+                                        <h5 className="text-sm font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-4">
                                             {t("projects.modal.role" as any) || "Role"}
                                         </h5>
-                                        <p className="text-white font-medium">{project.role}</p>
+                                        <p className="text-slate-900 dark:text-white font-medium">{project.role}</p>
                                     </div>
                                 </div>
                              </div>
@@ -475,5 +512,5 @@ function ProjectModal({ project, isOpen, onClose, t }: { project: Project | null
                 </div>
             )}
         </AnimatePresence>
-    )
+    );
 }

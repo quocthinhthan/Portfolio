@@ -37,7 +37,7 @@ export default function SpotlightCard({
       onMouseMove={handleMouseMove}
       onMouseEnter={handleFocus}
       onMouseLeave={handleBlur}
-      className={`relative rounded-xl border border-slate-800 bg-slate-900/50 overflow-hidden ${className}`}
+      className={`relative rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/50 overflow-hidden ${className}`}
     >
       <div
         className="pointer-events-none absolute -inset-px transition opacity-0 duration-300"

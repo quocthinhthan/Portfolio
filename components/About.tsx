@@ -18,22 +18,22 @@ export default function About() {
     offset: ["start end", "end start"],
   });
 
-  const y = useTransform(scrollYProgress, [0, 1], [100, -100]);
-  const opacity = useTransform(scrollYProgress, [0, 0.3, 0.8, 1], [0, 1, 1, 0]);
+  const y = useTransform(scrollYProgress, [0, 1], [40, -40]);
+  const opacity = useTransform(scrollYProgress, [0, 0.2, 0.9, 1], [0, 1, 1, 0.5]);
 
   return (
     <section 
       id="about" 
       ref={ref}
-      className="relative py-32 px-4 overflow-hidden bg-[#020617]"
+      className="relative py-32 px-4 overflow-hidden bg-slate-50 dark:bg-[#020617] transition-colors duration-300"
     >
       {/* 1. Background Elements (Giống Projects) */}
       <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(56,189,248,0.15),transparent_70%)]" />
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(56,189,248,0.12),transparent_70%)]" />
           <div
-            className="absolute inset-0 opacity-[0.08]"
+            className="absolute inset-0 opacity-[0.06] dark:opacity-[0.08]"
             style={{
-              backgroundImage: `linear-gradient(#cbd5e1 1px, transparent 1px), linear-gradient(90deg,#cbd5e1 1px, transparent 1px)`,
+              backgroundImage: `linear-gradient(#64748b 1px, transparent 1px), linear-gradient(90deg,#64748b 1px, transparent 1px)`,
               backgroundSize: "40px 40px",
             }}
           />
@@ -47,7 +47,7 @@ export default function About() {
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6 }}
-                className="flex items-center gap-2 text-sky-500 font-mono text-sm tracking-[0.2em] uppercase mb-4"
+                className="flex items-center gap-2 text-sky-600 dark:text-sky-500 font-mono text-sm tracking-[0.2em] uppercase mb-4"
              >
                 <Terminal size={16} />
                 <span>System Identity</span>
@@ -57,9 +57,9 @@ export default function About() {
                 initial={{ opacity: 0, scale: 0.9 }}
                 whileInView={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.6, delay: 0.1 }}
-                className="text-4xl md:text-5xl font-black text-white"
+                className="text-4xl md:text-5xl font-black text-slate-900 dark:text-white"
              >
-                {t("about.title")}<span className="text-sky-500">.</span>
+                {t("about.title")}<span className="text-sky-600 dark:text-sky-500">.</span>
              </motion.h2>
              
              <div className="h-1 w-24 bg-gradient-to-r from-sky-500 to-violet-500 rounded-full mt-6" />
@@ -68,13 +68,13 @@ export default function About() {
         {/* 3. Main Content Card (IDE/Glass Style) */}
         <motion.div
             style={{ y, opacity }}
-            className="group relative bg-[#0F172A] border border-white/10 rounded-3xl p-1 overflow-hidden shadow-2xl"
+            className="group relative bg-slate-200/70 dark:bg-[#0F172A] border border-slate-300/80 dark:border-white/10 rounded-3xl p-1 overflow-hidden shadow-xl dark:shadow-2xl"
         >
              {/* Gradient Border Effect */}
              <div className="absolute inset-0 bg-gradient-to-br from-sky-500/20 via-transparent to-violet-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
 
              {/* Inner Card */}
-             <div className="bg-[#0B1121] rounded-[1.3rem] p-8 md:p-12 relative overflow-hidden">
+             <div className="bg-white dark:bg-[#0B1121] rounded-[1.3rem] p-8 md:p-12 relative overflow-hidden shadow-inner">
                 
                 {/* Decorative Window Controls */}
                 <div className="absolute top-6 left-6 flex gap-2">
@@ -95,7 +95,7 @@ export default function About() {
                           <div className="absolute inset-1 border border-dashed border-violet-500/30 rounded-full animate-[spin_15s_linear_infinite_reverse]" />
                           
                           {/* --- THAY THẾ ICON USER BẰNG ẢNH CỦA BẠN --- */}
-                          <div className="absolute inset-2 rounded-full overflow-hidden border-2 border-slate-700/50 bg-slate-950 z-10 shadow-2xl">
+                          <div className="absolute inset-2 rounded-full overflow-hidden border-2 border-slate-300 dark:border-slate-700/50 bg-slate-100 dark:bg-slate-950 z-10 shadow-xl dark:shadow-2xl">
                               <Image 
                                   src="/about_avatar1.jpg" 
                                   alt="Thân Quốc Thịnh"
@@ -108,10 +108,10 @@ export default function About() {
 
                         {/* Quick Stats Badges */}
                         <div className="flex flex-wrap justify-center gap-3">
-                            <span className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-sky-500/10 border border-sky-500/20 text-sky-400 text-xs font-bold font-mono">
+                            <span className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-sky-500/10 border border-sky-500/20 text-sky-600 dark:text-sky-400 text-xs font-bold font-mono">
                                 <Code2 size={12} /> Backend
                             </span>
-                            <span className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-violet-500/10 border border-violet-500/20 text-violet-400 text-xs font-bold font-mono">
+                            <span className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-violet-500/10 border border-violet-500/20 text-violet-600 dark:text-violet-400 text-xs font-bold font-mono">
                                 <GraduationCap size={12} /> GPA 8.32
                             </span>
                         </div>
@@ -119,21 +119,21 @@ export default function About() {
 
                     {/* Right: Text Content */}
                     <div className="md:col-span-3 flex flex-col justify-center space-y-6">
-                         <h3 className="text-2xl font-bold text-white flex items-center gap-2">
-                            <span className="text-sky-500">{">"}</span> Hello_World
+                         <h3 className="text-2xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                            <span className="text-sky-600 dark:text-sky-500">{">"}</span> Hello_World
                          </h3>
                          
-                         <p className="text-slate-400 text-lg leading-relaxed">
+                         <p className="text-slate-700 dark:text-slate-400 text-lg leading-relaxed">
                             {t("about.p1")}
-                            <span className="text-sky-400 font-bold glow-text"> {t("about.backend")}</span>.
+                            <span className="text-sky-600 dark:text-sky-400 font-bold glow-text"> {t("about.backend")}</span>.
                          </p>
 
-                         <p className="text-slate-400 text-lg leading-relaxed border-l-2 border-slate-700 pl-4">
+                         <p className="text-slate-700 dark:text-slate-400 text-lg leading-relaxed border-l-2 border-slate-300 dark:border-slate-700 pl-4">
                             {t("about.p2")}
                          </p>
 
                          {/* Mini Tech Quote / Decor */}
-                         <div className="pt-4 mt-4 border-t border-white/5 flex items-center gap-3 text-slate-500 text-sm font-mono italic">
+                         <div className="pt-4 mt-4 border-t border-slate-200 dark:border-white/5 flex items-center gap-3 text-slate-500 dark:text-slate-500 text-sm font-mono italic">
                             <Cpu size={14} />
                             <span>"Clean Architecture & Scalability Enthusiast"</span>
                          </div>
