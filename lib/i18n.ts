@@ -11,42 +11,46 @@ export const dictionaries = {
     "nav.skills": "Kỹ Năng",      // 🟢 Mới
     "nav.contact": "Liên Hệ",     // 🟢 Mới
 
-    "hero.badge": "Sẵn sàng thực tập Backend",
+    "hero.badge": "Sẵn sàng làm việc • Backend / BA (.NET & Java)",
     "nav.achievements": "Thành Tựu",
     "hero.cta.projects": "Xem Dự Án",
     "hero.cta.contact": "Liên Hệ",
 
     "personal.name": "Thân Quốc Thịnh",
-    "personal.role": "Backend Developer | Sinh viên Kỹ thuật Phần mềm",
+    "personal.role": "Backend Developer & Business Analyst (.NET / Java)",
     "personal.description":
-      "Sinh viên năm cuối ngành Kỹ thuật Phần mềm tại ĐH Tôn Đức Thắng với GPA 8.32/10. Chuyên sâu về hệ thống Backend, kiến trúc Event-driven và Docker.",
+      "Kỹ sư phần mềm tốt nghiệp ĐH Tôn Đức Thắng với GPA 8.48/10. Chuyên sâu về hệ sinh thái .NET (C#, ASP.NET Core), Java (Spring Boot), phân tích nghiệp vụ (BA) và kiến trúc Microservices.",
 
     "about.title": "Về Tôi",
-    "about.p1": "Là sinh viên năm cuối với nền tảng kỹ thuật vững chắc (GPA 8.32/10), tôi tìm thấy niềm đam mê lớn trong việc xây dựng 'phần chìm' của các hệ thống phần mềm - ",
-    "about.backend": "Backend Development",
-    "about.p2": "Tôi không chỉ viết code để chạy được chức năng, mà luôn trăn trở làm sao để hệ thống tối ưu, dễ bảo trì và mở rộng (Clean Architecture). Với tư duy cầu tiến và sự kỷ luật, tôi đang tìm kiếm cơ hội thực tập (Spring Boot/Node.js) để được cống hiến sức trẻ và học hỏi từ những bài toán thực tế.",
+    "about.p1": "Tốt nghiệp ngành Kỹ thuật Phần mềm với nền tảng học thuật xuất sắc (GPA 8.48/10), tôi định hướng phát triển chuyên sâu trong hai lĩnh vực gắn kết mật thiết: ",
+    "about.backend": "Backend Development (.NET / Java) & Business Analysis (BA)",
+    "about.p2": "Tôi làm chủ công nghệ backend trọng tâm là .NET (C#, ASP.NET Core) cùng Java (Spring Boot), kết hợp tư duy phân tích nghiệp vụ (BA) để làm cầu nối chuẩn xác giữa yêu cầu bài toán kinh doanh và kiến trúc kỹ thuật tối ưu, dễ mở rộng (Clean Architecture). Tôi đang tìm kiếm vị trí chính thức Backend Developer hoặc Business Analyst để cống hiến và đồng hành phát triển lâu dài cùng doanh nghiệp.",
     
     "skills.title": "Kỹ Năng Kỹ Thuật",
 
     "experience.title": "Kinh Nghiệm & Học Vấn",
-    "exp.tdtu.title": "Sinh viên Kỹ thuật Phần mềm",
+    "exp.tdtu.title": "Kỹ sư Kỹ thuật Phần mềm",
     "exp.tdtu.company": "Đại học Tôn Đức Thắng",
-    "exp.tdtu.desc": "GPA hiện tại: 8.32/10. Hoàn thành hơn 12 dự án từ học thuật đến thực tế.",
+    "exp.tdtu.desc": "GPA tốt nghiệp: 8.48/10. Hoàn thành hơn 12 dự án từ học thuật đến thực tế.",
     "exp.mebisoft.title": "Đang làm việc",
     "exp.mebisoft.company": "Công ty Cổ phần Mebisoft (Mebisoft JSC)",
     "exp.mebisoft.desc": "Làm việc tại Mebisoft JSC từ tháng 03/2026 đến nay.",
-    "exp.intern.title": "Ứng viên Thực tập Backend",
-    "exp.intern.company": "Đang tìm kiếm cơ hội",
-    "exp.intern.desc": "Đang chuẩn bị CV và kiến thức chuyên sâu để ứng tuyển vị trí thực tập/fresher Backend.",
+    "exp.intern.title": "Backend Developer & Business Analyst",
+    "exp.intern.company": "Sẵn sàng làm việc",
+    "exp.intern.desc": "Sẵn sàng đảm nhận các dự án thực tế với thế mạnh chuyên sâu về .NET, Java, hệ cơ sở dữ liệu và kỹ năng phân tích nghiệp vụ.",
 
     "achievements.label": "Achievement Log",
     "achievements.title": "Chứng Chỉ & Giải Thưởng",
-    "achievements.description": "Những dấu mốc đáng nhớ trong hành trình học tập và xây dựng sản phẩm.",
+    "achievements.description": "Những dấu mốc đáng nhớ trong hành trình học tập, năng lực ngoại ngữ và xây dựng sản phẩm.",
     "achievements.awards": "Giải thưởng",
-    "achievements.certificates": "Kho chứng chỉ",
+    "achievements.certificates": "Chứng chỉ quốc tế",
     "achievements.certificates.empty": "Đang bổ sung những chứng nhận tiếp theo.",
     "achievements.pentapulse.title": "Giải Nhì Cuộc thi Startup khoa Dược",
     "achievements.pentapulse.description": "PentaPulse — giải pháp theo dõi suy tim mạn, từ ý tưởng đến sản phẩm full-stack.",
+    "achievements.ielts.title": "IELTS Academic",
+    "achievements.ielts.score": "6.0 Overall",
+    "achievements.ielts.description": "Chứng chỉ năng lực Anh ngữ học thuật quốc tế (IELTS Academic), thành thạo đọc hiểu tài liệu chuyên ngành và giao tiếp trong môi trường kỹ thuật.",
+    "achievements.ielts.issuer": "IDP / British Council",
 
     // =========================================================
     // 🟢 CẬP NHẬT PHẦN PROJECTS CHO GIAO DIỆN MỚI
@@ -106,7 +110,7 @@ export const dictionaries = {
 
     "contact.title": "Liên Hệ",
     "contact.desc":
-      "Tôi đang tìm kiếm cơ hội thực tập. Nếu bạn quan tâm đến hồ sơ của tôi, đừng ngần ngại kết nối!",
+      "Tôi đang tìm kiếm cơ hội làm việc ở vị trí Backend Developer (.NET / Java) hoặc Business Analyst (BA). Nếu bạn quan tâm đến hồ sơ của tôi, đừng ngần ngại kết nối!",
     "contact.downloadCv": "Tải Xuống CV",
 
     "footer.builtWith": "Được xây dựng bằng Next.js, Tailwind & Framer Motion.",
@@ -136,41 +140,45 @@ export const dictionaries = {
     "nav.skills": "Skills",       
     "nav.contact": "Contact",     
 
-    "hero.badge": "Open For Backend Internship",
+    "hero.badge": "Open For Opportunities • Backend / BA (.NET & Java)",
     "nav.achievements": "Achievements",
     "hero.cta.projects": "View Projects",
     "hero.cta.contact": "Contact Me",
 
     "personal.name": "Than Quoc Thinh",
-    "personal.role": "Backend Developer | Software Engineering Student",
+    "personal.role": "Backend Developer & Business Analyst (.NET / Java)",
     "personal.description":
-      "Final-year Software Engineering student at Ton Duc Thang University (GPA 8.32/10). Focused on backend systems, event-driven architecture, and Docker.",
+      "Software Engineering graduate from Ton Duc Thang University with GPA 8.48/10. Specialized in .NET (C#, ASP.NET Core), Java (Spring Boot), Business Analysis, and scalable backend architectures.",
 
     "about.title": "About Me",
-    "about.p1": "As a final-year student with a solid technical foundation (GPA 8.32/10), I found my true passion in building the 'core engines' of software systems - ",
-    "about.backend": "Backend Development",
-    "about.p2": "I don't just write code that works; I strive for maintainability, scalability, and clean architecture. With a growth mindset and strong discipline, I am seeking a Backend Internship (Spring Boot/Node.js) to contribute my energy and learn from real-world challenges.",
+    "about.p1": "Graduating in Software Engineering with an outstanding GPA (8.48/10), I focus deeply on two complementary domains: ",
+    "about.backend": "Backend Development (.NET / Java) & Business Analysis (BA)",
+    "about.p2": "I build robust, maintainable backend systems with .NET (C#, ASP.NET Core) and Java (Spring Boot), coupled with a Business Analyst mindset to bridge business requirements and scalable software architecture. I am looking for full-time opportunities as a Backend Developer or Business Analyst to deliver measurable value and grow with forward-thinking teams.",
     "skills.title": "Technical Skills",
 
     "experience.title": "Experience & Education",
-    "exp.tdtu.title": "Software Engineering Student",
+    "exp.tdtu.title": "Software Engineering Graduate",
     "exp.tdtu.company": "Ton Duc Thang University",
-    "exp.tdtu.desc": "Current GPA: 8.32/10. Completed 12+ projects ranging from academic to practical applications.",
+    "exp.tdtu.desc": "Graduation GPA: 8.48/10. Completed 12+ academic and production-ready projects.",
     "exp.mebisoft.title": "Currently Working",
     "exp.mebisoft.company": "Mebisoft Joint Stock Company (Mebisoft JSC)",
     "exp.mebisoft.desc": "Working at Mebisoft JSC since March 2026.",
-    "exp.intern.title": "Backend Intern Candidate",
-    "exp.intern.company": "Searching for Opportunities",
-    "exp.intern.desc": "Preparing technical knowledge and projects for Backend internship/fresher roles.",
+    "exp.intern.title": "Backend Developer & Business Analyst",
+    "exp.intern.company": "Open to Opportunities",
+    "exp.intern.desc": "Ready to take on impactful backend engineering and business analysis challenges with .NET and Java expertise.",
 
     "achievements.label": "Achievement Log",
     "achievements.title": "Certificates & Awards",
-    "achievements.description": "Meaningful milestones from my learning and product-building journey.",
+    "achievements.description": "Meaningful milestones from my learning, language proficiency, and product-building journey.",
     "achievements.awards": "Awards",
-    "achievements.certificates": "Certificate Vault",
+    "achievements.certificates": "Certificates",
     "achievements.certificates.empty": "New credentials will be added here.",
     "achievements.pentapulse.title": "Second Prize — Pharmacy Faculty Startup Competition",
     "achievements.pentapulse.description": "PentaPulse — a chronic heart-failure monitoring solution, built from idea to full-stack product.",
+    "achievements.ielts.title": "IELTS Academic",
+    "achievements.ielts.score": "6.0 Overall",
+    "achievements.ielts.description": "International English Language Testing System (Academic), proficient in reading technical documentation and communicating in engineering environments.",
+    "achievements.ielts.issuer": "IDP / British Council",
 
     // =========================================================
     // 🟢 UPDATED PROJECTS SECTION FOR NEW UI
@@ -231,7 +239,7 @@ export const dictionaries = {
 
     "contact.title": "Get In Touch",
     "contact.desc":
-      "I'm looking for backend internship opportunities. If you're interested in my profile, feel free to reach out!",
+      "I am seeking opportunities as a Backend Developer (.NET / Java) or Business Analyst (BA). If you're interested in my profile, feel free to reach out!",
     "contact.downloadCv": "Download CV",
 
     "footer.builtWith": "Built with Next.js, Tailwind & Framer Motion.",
