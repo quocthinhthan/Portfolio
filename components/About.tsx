@@ -109,10 +109,13 @@ export default function About() {
                         {/* Quick Stats Badges */}
                         <div className="flex flex-wrap justify-center gap-3">
                             <span className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-sky-500/10 border border-sky-500/20 text-sky-600 dark:text-sky-400 text-xs font-bold font-mono">
-                                <Code2 size={12} /> Backend
+                                <Code2 size={12} /> .NET & Java
+                            </span>
+                            <span className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 text-xs font-bold font-mono">
+                                <Terminal size={12} /> BA & Backend
                             </span>
                             <span className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-violet-500/10 border border-violet-500/20 text-violet-600 dark:text-violet-400 text-xs font-bold font-mono">
-                                <GraduationCap size={12} /> GPA 8.32
+                                <GraduationCap size={12} /> GPA 8.48
                             </span>
                         </div>
                     </div>

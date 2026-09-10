@@ -5,24 +5,30 @@ import ClientShell from "@/components/ClientShell";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Thân Quốc Thịnh | Software Engineer Portfolio",
+  title: "Thân Quốc Thịnh | Backend Developer & Business Analyst (.NET / Java)",
   description:
-    "Portfolio của Thân Quốc Thịnh – sinh viên Kỹ thuật Phần mềm tại TDTU, Web Developer với Next.js, React, Flutter, Backend.",
+    "Portfolio của Thân Quốc Thịnh – Backend Developer & Business Analyst (BA), GPA 8.48/10 ĐH Tôn Đức Thắng. Chuyên sâu về .NET (C#, ASP.NET Core), Java (Spring Boot), Microservices, SQL Server và phân tích nghiệp vụ.",
   keywords: [
     "Thân Quốc Thịnh",
     "Than Quoc Thinh",
-    "portfolio",
+    ".NET Developer",
+    "ASP.NET Core",
+    "C# Developer",
+    "Java Developer",
+    "Spring Boot",
+    "Backend Developer",
+    "Business Analyst",
+    "BA IT",
+    "Microservices",
     "software engineer",
-    "nextjs developer",
-    "sinh viên IT",
-    "web developer vietnam"
+    "backend developer vietnam"
   ],
   authors: [{ name: "Thân Quốc Thịnh" }],
   creator: "Thân Quốc Thịnh",
   openGraph: {
-    title: "Thân Quốc Thịnh | Software Engineer",
+    title: "Thân Quốc Thịnh | Backend Developer & Business Analyst (.NET / Java)",
     description:
-      "Portfolio cá nhân của Thân Quốc Thịnh – Web Developer, Backend Developer",
+      "Portfolio cá nhân của Thân Quốc Thịnh – Backend Developer & Business Analyst (BA) chuyên sâu về .NET (C#) và Java (Spring Boot), GPA 8.48/10.",
     url: "https://thanquocthinh.id.vn",
     siteName: "Than Quoc Thinh Portfolio",
     locale: "vi_VN",
@@ -38,8 +44,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Thân Quốc Thịnh | Software Engineer",
-    description: "Portfolio cá nhân của Thân Quốc Thịnh",
+    title: "Thân Quốc Thịnh | Backend Developer & Business Analyst (.NET / Java)",
+    description: "Portfolio cá nhân của Thân Quốc Thịnh – Chuyên sâu .NET & Java, GPA 8.48/10",
     images: ["/avatar_share.jpg"], 
   },
   icons: {
@@ -85,7 +91,7 @@ export default function RootLayout({
         
         <ClientShell>{children}</ClientShell>
 
-        {/* Đã di chuyển script vào bên trong body */}
+        {/* Schema Markup tối ưu SEO Google: .NET, Java, BA */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -94,11 +100,25 @@ export default function RootLayout({
               "@type": "Person",
               name: "Thân Quốc Thịnh",
               url: "https://thanquocthinh.id.vn",
-              jobTitle: "Software Engineer",
-              knowsAbout: ["Business Analysis", "Springboot", "Node.js", "React", "Flutter", "Backend", "Microservices"],
+              jobTitle: "Backend Developer & Business Analyst",
+              alumniOf: "Ton Duc Thang University",
+              knowsAbout: [
+                ".NET",
+                "C#",
+                "ASP.NET Core",
+                "Java",
+                "Spring Boot",
+                "Business Analysis",
+                "Requirements Engineering",
+                "Microservices",
+                "Docker",
+                "SQL Server",
+                "MySQL",
+                "Event-driven Architecture"
+              ],
               sameAs: [
-                "https://github.com/your-github", // Đừng quên thay link thật của Thịnh vào đây nhé!
-                "https://linkedin.com/in/your-linkedin"
+                "https://github.com/quocthinhthan",
+                "https://linkedin.com/in/quocthinhthan"
               ]
             })
           }}

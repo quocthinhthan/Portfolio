@@ -4,8 +4,8 @@ import { Server, Database, Layout, Terminal, Users, Code2Icon } from "lucide-rea
 // Thông tin cá nhân
 export const personalInfo = {
   name: "Thân Quốc Thịnh",
-  role: "Backend Developer | Software Engineering Student",
-  description: "Sinh viên năm cuối ngành Kỹ thuật Phần mềm tại ĐH Tôn Đức Thắng với GPA 8.32/10. Chuyên sâu về hệ thống Backend, kiến trúc Event-driven và Docker.",
+  role: "Backend Developer & Business Analyst (.NET / Java)",
+  description: "Kỹ sư phần mềm tốt nghiệp ĐH Tôn Đức Thắng với GPA 8.48/10. Chuyên sâu về hệ sinh thái .NET (C#, ASP.NET Core), Java (Spring Boot), phân tích nghiệp vụ (Business Analysis) và kiến trúc Microservices.",
   email: "thanquocthinh112@gmail.com",
   github: "https://github.com/quocthinhthan",
   linkedin: "https://linkedin.com/in/quocthinhthan",
@@ -24,31 +24,31 @@ export interface Project {
   demoUrl?: string;
 }
 
-// Danh sách kỹ năng
+// Danh sách kỹ năng (Ưu tiên .NET, sau đó là Java)
 export const skills = [
-  { category: "Frameworks", icon: Server, items: ["Spring Boot", "Node.js", "ReactJS", ".NET"] },
+  { category: "Frameworks", icon: Server, items: [".NET", "ASP.NET Core", "Spring Boot", "Node.js"] },
   { 
     category: "Languages & Core",
     icon: Code2Icon, 
-    items: ["Java", "JavaScript","Python", "Dart", "C#" ] 
+    items: ["C#", "Java", "SQL", "JavaScript", "Python"] 
   },
-  { category: "Databases", icon: Database, items: ["MySQL", "SQL Server", "MongoDB", "Redis"] },
-  { category: "DevOps", icon: Terminal, items: ["Docker Swarm", "Git", "Postman", "Linux"] },
+  { category: "Databases", icon: Database, items: ["SQL Server", "MySQL", "Redis", "MongoDB"] },
+  { category: "DevOps & BA", icon: Terminal, items: ["Docker Swarm", "Git", "Business Analysis", "Postman", "Linux"] },
 ];
 
-// Danh sách kinh nghiệm 'experience' (Để fix lỗi ở Experience.tsx)
+// Danh sách kinh nghiệm 'experience'
 export const experience = [
   {
     year: "03/2026 - Present",
     title: "Currently Working",
     company: "Mebisoft JSC",
-    description: "GPA hiện tại: 8.32/10. Hoàn thành hơn 12 dự án từ học thuật đến thực tế.",
+    description: "GPA 8.48/10. Hoàn thành hơn 12 dự án từ học thuật đến thực tế.",
   },
   {
     year: "2022 - 2026",
-    title: "Software Engineering Student",
+    title: "Software Engineering Graduate",
     company: "Ton Duc Thang University",
-    description: "Đang chuẩn bị CV và kiến thức để ứng tuyển vị trí thực tập Backend.",
+    description: "Tốt nghiệp ngành Kỹ thuật Phần mềm với GPA 8.48/10. Sẵn sàng đảm nhận các vị trí Backend Developer hoặc Business Analyst.",
   }
 ];
 
