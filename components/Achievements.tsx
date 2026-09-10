@@ -1,8 +1,8 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { BadgeCheck, CalendarDays, FileBadge, Terminal, Trophy } from "lucide-react";
-import { achievements } from "@/lib/data";
+import { BadgeCheck, CalendarDays, FileBadge, Globe, Terminal, Trophy } from "lucide-react";
+import { achievements, certificates } from "@/lib/data";
 import { useI18n } from "@/components/I18nProvider";
 import type { I18nKey } from "@/lib/i18n";
 
@@ -30,16 +30,17 @@ export default function Achievements() {
           </p>
         </div>
 
-        <div className="grid lg:grid-cols-[1.45fr_0.85fr] gap-6">
+        <div className="grid md:grid-cols-2 gap-6">
+          {/* Awards Card */}
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-80px" }}
-            className="group relative overflow-hidden rounded-3xl border border-slate-200/80 dark:border-white/10 bg-white dark:bg-[#0F172A] p-7 md:p-9 shadow-lg dark:shadow-2xl"
+            className="group relative overflow-hidden rounded-3xl border border-slate-200/80 dark:border-white/10 bg-white dark:bg-[#0F172A] p-7 md:p-9 shadow-lg dark:shadow-2xl flex flex-col justify-between"
           >
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_10%_0%,rgba(56,189,248,0.12),transparent_45%),radial-gradient(circle_at_95%_100%,rgba(168,85,247,0.12),transparent_42%)]" />
             <div className="relative">
-              <div className="flex items-center justify-between gap-4 mb-9">
+              <div className="flex items-center justify-between gap-4 mb-8">
                 <div className="flex items-center gap-3 text-sky-600 dark:text-sky-400 font-mono text-xs font-bold tracking-[0.16em] uppercase">
                   <span className="flex size-10 items-center justify-center rounded-2xl border border-sky-500/30 bg-sky-500/10">
                     <Trophy size={19} />
@@ -69,28 +70,58 @@ export default function Achievements() {
             </div>
           </motion.div>
 
+          {/* Certificates Card */}
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-80px" }}
             transition={{ delay: 0.12 }}
-            className="relative overflow-hidden rounded-3xl border border-dashed border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50 p-7 md:p-9 shadow-sm"
+            className="group relative overflow-hidden rounded-3xl border border-slate-200/80 dark:border-white/10 bg-white dark:bg-[#0F172A] p-7 md:p-9 shadow-lg dark:shadow-2xl flex flex-col justify-between"
           >
-            <div className="absolute -right-12 -top-12 size-40 rounded-full border border-violet-500/20" />
-            <div className="relative flex h-full min-h-60 flex-col justify-between">
-              <div>
-                <div className="flex size-12 items-center justify-center rounded-2xl bg-violet-500/10 text-violet-600 dark:text-violet-400 border border-violet-500/20">
-                  <FileBadge size={22} />
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_90%_0%,rgba(168,85,247,0.12),transparent_45%),radial-gradient(circle_at_10%_100%,rgba(56,189,248,0.12),transparent_42%)]" />
+            <div className="relative">
+              <div className="flex items-center justify-between gap-4 mb-8">
+                <div className="flex items-center gap-3 text-violet-600 dark:text-violet-400 font-mono text-xs font-bold tracking-[0.16em] uppercase">
+                  <span className="flex size-10 items-center justify-center rounded-2xl border border-violet-500/30 bg-violet-500/10">
+                    <FileBadge size={19} />
+                  </span>
+                  {t("achievements.certificates")}
                 </div>
-                <h3 className="mt-6 text-xl font-bold text-slate-900 dark:text-white">{t("achievements.certificates")}</h3>
-                <p className="mt-3 text-sm leading-relaxed text-slate-600 dark:text-slate-400">
-                  {t("achievements.certificates.empty")}
-                </p>
+                <span className="rounded-full border border-violet-500/30 bg-violet-500/10 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-violet-600 dark:text-violet-400">
+                  International
+                </span>
               </div>
-              <div className="flex items-center gap-2 pt-8 text-xs font-mono uppercase tracking-widest text-slate-500">
-                <BadgeCheck size={15} className="text-violet-600 dark:text-violet-400" />
-                Credential-ready
-              </div>
+
+              {certificates.map((cert) => (
+                <div key={cert.id} className="relative pl-7 border-l border-violet-500/40">
+                  <span className="absolute -left-[5px] top-1.5 size-2 rounded-full bg-violet-500 dark:bg-violet-400 shadow-[0_0_14px_rgba(168,85,247,0.9)]" />
+                  <div className="flex flex-wrap items-center gap-3 mb-2">
+                    <h3 className="text-2xl md:text-3xl font-extrabold text-slate-900 dark:text-white leading-tight">
+                      {t(`achievements.${cert.id}.title` as I18nKey)}
+                    </h3>
+                    <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-black tracking-wide bg-violet-500/10 dark:bg-violet-500/20 text-violet-600 dark:text-violet-300 border border-violet-500/30 shadow-sm">
+                      {t(`achievements.${cert.id}.score` as I18nKey)}
+                    </span>
+                  </div>
+                  <p className="mt-3 max-w-xl text-slate-700 dark:text-slate-400 leading-relaxed">
+                    {t(`achievements.${cert.id}.description` as I18nKey)}
+                  </p>
+                  <div className="mt-6 flex flex-wrap items-center gap-4 text-sm font-mono text-violet-600 dark:text-violet-400">
+                    <div className="flex items-center gap-2">
+                      <Globe size={15} />
+                      <span>{t(`achievements.${cert.id}.issuer` as I18nKey)}</span>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div className="relative mt-8 pt-4 border-t border-slate-200/80 dark:border-white/5 flex items-center justify-between text-xs font-mono text-slate-500">
+              <span className="flex items-center gap-1.5">
+                <BadgeCheck size={15} className="text-emerald-500" />
+                Verified Credential
+              </span>
+              <span className="uppercase tracking-wider">CEFR B2 Level</span>
             </div>
           </motion.div>
         </div>

@@ -62,9 +62,10 @@ function ShellInner({ children }: { children: React.ReactNode }) {
         transition={{ duration: 0.35, ease: "easeInOut" }}
         className="fixed top-6 left-1/2 -translate-x-1/2 w-[95%] max-w-5xl z-50"
       >
-        {/* Lớp nền Glassmorphism mờ nhòe chuẩn iOS (Hỗ trợ Light & Dark theme) */}
-        <div className="relative rounded-2xl md:rounded-full border border-slate-200/80 dark:border-white/10 bg-white/80 dark:bg-slate-950/40 backdrop-blur-xl md:backdrop-blur-2xl shadow-lg dark:shadow-[0_8px_32px_0_rgba(0,0,0,0.4)] flex justify-between items-center px-5 py-3 transition-all duration-300">
+        {/* Lớp nền Siêu trong suốt không viền (Ultra-translucent Frameless Glass) */}
+        <div className="relative rounded-2xl md:rounded-full border-0 bg-white/30 dark:bg-slate-950/25 backdrop-blur-2xl md:backdrop-blur-3xl backdrop-saturate-[180%] shadow-[0_8px_32px_0_rgba(15,23,42,0.06)] dark:shadow-[0_8px_32px_0_rgba(0,0,0,0.35)] flex justify-between items-center px-5 py-3 transition-all duration-300">
           
+
           {/* Logo (Giữ nguyên theo yêu cầu) */}
           <div className="cursor-pointer group select-none">
             <a href="#" onClick={() => setMobileMenuOpen(false)} className="font-black text-xl md:text-2xl tracking-tighter text-slate-900 dark:text-slate-100">
@@ -100,14 +101,14 @@ function ShellInner({ children }: { children: React.ReactNode }) {
               onClick={toggleTheme}
               aria-label={theme === "dark" ? t("nav.theme.light") : t("nav.theme.dark")}
               title={theme === "dark" ? t("nav.theme.light") : t("nav.theme.dark")}
-              className="flex items-center justify-center size-9 rounded-full text-xs font-bold border border-slate-300 dark:border-slate-700/60 bg-slate-100/90 dark:bg-slate-900/40 text-slate-900 dark:text-slate-200 hover:border-sky-500 hover:text-sky-600 dark:hover:text-sky-400 hover:bg-sky-500/10 transition-all duration-300"
+              className="flex items-center justify-center size-9 rounded-full text-xs font-bold border border-white/60 dark:border-white/10 bg-white/60 dark:bg-white/[0.06] backdrop-blur-md text-slate-900 dark:text-slate-200 hover:border-sky-500 hover:text-sky-600 dark:hover:text-sky-400 hover:bg-sky-500/10 shadow-[inset_0_1px_1px_rgba(255,255,255,0.6)] dark:shadow-[inset_0_1px_1px_rgba(255,255,255,0.15)] transition-all duration-300"
             >
               {theme === "dark" ? <Sun size={16} /> : <Moon size={16} />}
             </button>
             <button
               type="button"
               onClick={() => setLang(lang === "vi" ? "en" : "vi")}
-              className="flex items-center gap-2 px-3 md:px-4 py-2 rounded-full text-xs font-bold border border-slate-300 dark:border-slate-700/60 bg-slate-100/90 dark:bg-slate-900/40 text-slate-900 dark:text-slate-200 hover:border-sky-500 hover:text-sky-600 dark:hover:text-sky-400 hover:bg-sky-500/10 transition-all duration-300 group"
+              className="flex items-center gap-2 px-3 md:px-4 py-2 rounded-full text-xs font-bold border border-white/60 dark:border-white/10 bg-white/60 dark:bg-white/[0.06] backdrop-blur-md text-slate-900 dark:text-slate-200 hover:border-sky-500 hover:text-sky-600 dark:hover:text-sky-400 hover:bg-sky-500/10 shadow-[inset_0_1px_1px_rgba(255,255,255,0.6)] dark:shadow-[inset_0_1px_1px_rgba(255,255,255,0.15)] transition-all duration-300 group"
             >
               <Globe size={14} className="group-hover:animate-spin-slow" />
               <span>{lang === "vi" ? "VN" : "EN"}</span>
@@ -117,7 +118,7 @@ function ShellInner({ children }: { children: React.ReactNode }) {
             <button
               type="button"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden flex items-center justify-center size-9 rounded-full border border-slate-300 dark:border-slate-700/60 bg-slate-100/90 dark:bg-slate-900/40 text-slate-900 dark:text-slate-200 hover:border-sky-500 hover:text-sky-600 dark:hover:text-sky-400 transition-all duration-300"
+              className="md:hidden flex items-center justify-center size-9 rounded-full border border-white/60 dark:border-white/10 bg-white/60 dark:bg-white/[0.06] backdrop-blur-md text-slate-900 dark:text-slate-200 hover:border-sky-500 hover:text-sky-600 dark:hover:text-sky-400 transition-all duration-300"
               aria-label="Toggle mobile menu"
             >
               {mobileMenuOpen ? <X size={18} /> : <Menu size={18} />}
@@ -133,7 +134,7 @@ function ShellInner({ children }: { children: React.ReactNode }) {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -10, scale: 0.98 }}
               transition={{ duration: 0.2, ease: "easeOut" }}
-              className="md:hidden mt-2 p-4 rounded-2xl border border-slate-200/60 dark:border-white/10 bg-white/50 dark:bg-slate-950/60 backdrop-blur-xl shadow-xl flex flex-col gap-2"
+              className="md:hidden mt-2 p-4 rounded-2xl border border-white/60 dark:border-white/15 bg-gradient-to-b from-white/80 to-white/60 dark:from-slate-950/75 dark:to-slate-950/90 backdrop-blur-2xl backdrop-saturate-[180%] shadow-[inset_0_1px_1px_rgba(255,255,255,0.6),0_16px_40px_-10px_rgba(0,0,0,0.15)] dark:shadow-[inset_0_1px_1px_rgba(255,255,255,0.15),0_16px_40px_-10px_rgba(0,0,0,0.6)] flex flex-col gap-2 overflow-hidden relative"
             >
               {navLinks.map((link) => (
                 <a

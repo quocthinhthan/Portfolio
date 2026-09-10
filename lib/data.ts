@@ -57,6 +57,10 @@ export const achievements = [
   { id: "pentapulse", type: "award" as const, year: "2025" },
 ];
 
+export const certificates = [
+  { id: "ielts", type: "certificate" as const, score: "6.0 Overall", issuer: "IDP / British Council" },
+];
+
 export const projects: Project[] = [
   {
     id: "pentapulse",

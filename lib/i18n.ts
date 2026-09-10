@@ -41,12 +41,16 @@ export const dictionaries = {
 
     "achievements.label": "Achievement Log",
     "achievements.title": "Chứng Chỉ & Giải Thưởng",
-    "achievements.description": "Những dấu mốc đáng nhớ trong hành trình học tập và xây dựng sản phẩm.",
+    "achievements.description": "Những dấu mốc đáng nhớ trong hành trình học tập, năng lực ngoại ngữ và xây dựng sản phẩm.",
     "achievements.awards": "Giải thưởng",
-    "achievements.certificates": "Kho chứng chỉ",
+    "achievements.certificates": "Chứng chỉ quốc tế",
     "achievements.certificates.empty": "Đang bổ sung những chứng nhận tiếp theo.",
     "achievements.pentapulse.title": "Giải Nhì Cuộc thi Startup khoa Dược",
     "achievements.pentapulse.description": "PentaPulse — giải pháp theo dõi suy tim mạn, từ ý tưởng đến sản phẩm full-stack.",
+    "achievements.ielts.title": "IELTS Academic",
+    "achievements.ielts.score": "6.0 Overall",
+    "achievements.ielts.description": "Chứng chỉ năng lực Anh ngữ học thuật quốc tế (IELTS Academic), thành thạo đọc hiểu tài liệu chuyên ngành và giao tiếp trong môi trường kỹ thuật.",
+    "achievements.ielts.issuer": "IDP / British Council",
 
     // =========================================================
     // 🟢 CẬP NHẬT PHẦN PROJECTS CHO GIAO DIỆN MỚI
@@ -165,12 +169,16 @@ export const dictionaries = {
 
     "achievements.label": "Achievement Log",
     "achievements.title": "Certificates & Awards",
-    "achievements.description": "Meaningful milestones from my learning and product-building journey.",
+    "achievements.description": "Meaningful milestones from my learning, language proficiency, and product-building journey.",
     "achievements.awards": "Awards",
-    "achievements.certificates": "Certificate Vault",
+    "achievements.certificates": "Certificates",
     "achievements.certificates.empty": "New credentials will be added here.",
     "achievements.pentapulse.title": "Second Prize — Pharmacy Faculty Startup Competition",
     "achievements.pentapulse.description": "PentaPulse — a chronic heart-failure monitoring solution, built from idea to full-stack product.",
+    "achievements.ielts.title": "IELTS Academic",
+    "achievements.ielts.score": "6.0 Overall",
+    "achievements.ielts.description": "International English Language Testing System (Academic), proficient in reading technical documentation and communicating in engineering environments.",
+    "achievements.ielts.issuer": "IDP / British Council",
 
     // =========================================================
     // 🟢 UPDATED PROJECTS SECTION FOR NEW UI

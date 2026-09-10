@@ -71,7 +71,8 @@ export default function Hero() {
           transition={{ delay: 0.2 }}
           className="mb-8"
         >
-          <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-slate-300/80 dark:border-slate-700/50 bg-white/80 dark:bg-slate-900/40 backdrop-blur-md text-slate-800 dark:text-sky-100 text-xs font-bold uppercase tracking-widest shadow-sm dark:shadow-lg">
+          <span className="relative inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-white/70 dark:border-white/15 bg-gradient-to-b from-white/80 to-white/50 dark:from-white/[0.08] dark:to-slate-900/40 backdrop-blur-xl backdrop-saturate-[180%] text-slate-800 dark:text-sky-100 text-xs font-bold uppercase tracking-widest shadow-[inset_0_1px_1px_rgba(255,255,255,0.8),0_4px_16px_rgba(0,0,0,0.06)] dark:shadow-[inset_0_1px_1px_rgba(255,255,255,0.2),0_4px_16px_rgba(0,0,0,0.4)] overflow-hidden">
+            <div className="pointer-events-none absolute inset-x-3 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/90 dark:via-white/30 to-transparent" />
             <span className="relative flex h-2 w-2">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
