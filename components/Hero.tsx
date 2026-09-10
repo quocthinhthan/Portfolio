@@ -37,7 +37,7 @@ export default function Hero() {
   const { t } = useI18n();
 
   return (
-    <section className="min-h-[100dvh] relative flex flex-col justify-center items-center text-center px-4 py-20 overflow-hidden">
+    <section className="min-h-[100dvh] relative flex flex-col justify-center items-center text-center px-4 py-16 md:py-20 overflow-hidden">
       
       <BackgroundBeams />
 

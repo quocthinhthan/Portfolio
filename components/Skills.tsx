@@ -28,10 +28,10 @@ export default function Skills() {
   const { t } = useI18n();
 
   return (
-    <section id="skills" className="relative py-32 px-4 max-w-6xl mx-auto overflow-hidden">
+    <section id="skills" className="relative py-16 md:py-20 px-4 max-w-6xl mx-auto overflow-hidden">
 
       {/* 2. Header Style Terminal */}
-      <div className="flex flex-col items-center mb-20 relative z-10">
+      <div className="flex flex-col items-center mb-10 md:mb-12 relative z-10">
         <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}

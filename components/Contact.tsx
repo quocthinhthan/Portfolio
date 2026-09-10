@@ -8,7 +8,7 @@ export default function Contact() {
   const { t } = useI18n();
 
   return (
-    <section id="contact" className="py-24 px-4 text-center relative overflow-hidden">
+    <section id="contact" className="py-16 md:py-20 px-4 text-center relative overflow-hidden">
         {/* Background glow for contact */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-purple-600/10 rounded-full blur-[100px] -z-10" />
 
@@ -19,7 +19,7 @@ export default function Contact() {
         className="max-w-4xl mx-auto"
       >
         <h2 className="text-4xl font-bold mb-6 text-slate-900 dark:text-white">{t("contact.title")}</h2>
-        <p className="text-slate-600 dark:text-slate-400 mb-12 text-lg leading-relaxed max-w-2xl mx-auto">
+        <p className="text-slate-600 dark:text-slate-400 mb-8 md:mb-10 text-lg leading-relaxed max-w-2xl mx-auto">
           {t("contact.desc")}
         </p>
 

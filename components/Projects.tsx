@@ -146,7 +146,7 @@ export default function Projects() {
     <>
       <section
         id="projects"
-        className="relative py-24 md:py-32 bg-slate-50 dark:bg-[#020617] overflow-hidden transition-colors duration-300"
+        className="relative py-16 md:py-20 bg-slate-50 dark:bg-[#020617] overflow-hidden transition-colors duration-300"
       >
         {/* Parallax Icons */}
         <div className="absolute inset-0 z-0 opacity-40 pointer-events-none">
@@ -154,7 +154,7 @@ export default function Projects() {
         </div>
 
         {/* SECTION HEADER */}
-        <div className="max-w-7xl mx-auto px-4 md:px-8 mb-10 relative z-20 flex flex-col md:flex-row md:items-end justify-between gap-6">
+        <div className="max-w-6xl mx-auto px-4 md:px-8 mb-8 md:mb-10 relative z-20 flex flex-col md:flex-row md:items-end justify-between gap-6">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -200,27 +200,29 @@ export default function Projects() {
         </div>
 
         {/* PROJECTS CAROUSEL (TRACK) */}
-        <div
-          ref={scrollRef}
-          onMouseDown={handleMouseDown}
-          onMouseLeave={handleMouseLeave}
-          onMouseUp={handleMouseUp}
-          onMouseMove={handleMouseMove}
-          onScroll={handleScroll}
-          className="relative z-10 w-full overflow-x-auto select-none cursor-grab active:cursor-grabbing py-4 flex gap-6 snap-x snap-mandatory px-[calc((100vw-85vw)/2)] sm:px-[calc((100vw-350px)/2)] lg:px-[calc((100vw-1280px)/2)]"
-        >
-          {projects.map((project, index) => (
-            <ProjectCard
-              key={project.id}
-              project={project}
-              t={t}
-              index={index}
-              onOpen={() => setSelectedProject(project)}
-            />
-          ))}
+        <div className="max-w-6xl mx-auto px-4 md:px-8 relative z-10">
+          <div
+            ref={scrollRef}
+            onMouseDown={handleMouseDown}
+            onMouseLeave={handleMouseLeave}
+            onMouseUp={handleMouseUp}
+            onMouseMove={handleMouseMove}
+            onScroll={handleScroll}
+            className="w-full overflow-x-auto select-none cursor-grab active:cursor-grabbing py-3 flex gap-5 md:gap-6 snap-x snap-mandatory scroll-smooth no-scrollbar px-1"
+          >
+            {projects.map((project, index) => (
+              <ProjectCard
+                key={project.id}
+                project={project}
+                t={t}
+                index={index}
+                onOpen={() => setSelectedProject(project)}
+              />
+            ))}
 
-          {/* GitHub CTA Card */}
-          <GithubCtaCard />
+            {/* GitHub CTA Card */}
+            <GithubCtaCard />
+          </div>
         </div>
       </section>
 
@@ -272,11 +274,11 @@ function ProjectCard({
       style={{ rotateX, rotateY }}
       className="
         relative snap-start
-        w-[85vw] sm:w-[350px] lg:w-[calc((100%-3rem)/3)] min-h-[500px] md:min-h-[540px] flex-shrink-0
-        rounded-[2.2rem] md:rounded-[2.8rem] p-6 md:p-9 flex flex-col justify-between overflow-hidden
+        w-[85vw] sm:w-[320px] md:w-[340px] lg:w-[calc((100%-2.5rem)/3)] min-h-[460px] md:min-h-[490px] flex-shrink-0
+        rounded-[2rem] md:rounded-[2.4rem] p-6 md:p-7 flex flex-col justify-between overflow-hidden
         bg-white dark:bg-[#0F172A] border-[1.5px] border-slate-200 dark:border-white/10
         shadow-lg dark:shadow-none
-        hover:border-sky-500/60 hover:shadow-[0_25px_60px_-15px_rgba(56,189,248,0.25)]
+        hover:border-sky-500/60 hover:shadow-[0_20px_50px_-15px_rgba(56,189,248,0.25)]
         transition-all duration-300
         cursor-pointer group select-none
       "
@@ -298,11 +300,11 @@ function ProjectCard({
           )}
         </div>
 
-        <h3 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-slate-900 dark:text-white mb-4 group-hover:text-sky-600 dark:group-hover:text-sky-400 transition-colors">
+        <h3 className="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white mb-4 group-hover:text-sky-600 dark:group-hover:text-sky-400 transition-colors">
           {t(`proj.${project.id}.title` as any)}
         </h3>
 
-        <p className="text-slate-700 dark:text-slate-300 text-base md:text-lg leading-relaxed pl-4 border-l-2 border-sky-500/50 line-clamp-3 font-medium">
+        <p className="text-slate-700 dark:text-slate-300 text-base leading-relaxed pl-4 border-l-2 border-sky-500/50 line-clamp-3 font-medium">
           {t(`proj.${project.id}.short` as any) || "Mô tả dự án..."}
         </p>
         
@@ -372,7 +374,7 @@ function GithubCtaCard() {
             onMouseMove={handleMouseMove}
             onMouseLeave={resetTilt}
             style={{ rotateX, rotateY }}
-            className="group relative snap-start w-[85vw] sm:w-[350px] lg:w-[calc((100%-3rem)/3)] min-h-[500px] md:min-h-[540px] flex-shrink-0 perspective-[1000px] cursor-pointer select-none"
+            className="group relative snap-start w-[85vw] sm:w-[320px] md:w-[340px] lg:w-[calc((100%-2.5rem)/3)] min-h-[460px] md:min-h-[490px] flex-shrink-0 perspective-[1000px] cursor-pointer select-none"
         >
              <div className="
                 w-full h-full rounded-[2.2rem] md:rounded-[2.5rem]

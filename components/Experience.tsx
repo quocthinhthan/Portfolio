@@ -16,10 +16,10 @@ export default function Experience() {
   ];
 
   return (
-    <section id="experience" className="relative py-32 px-4 max-w-5xl mx-auto overflow-hidden">
+    <section id="experience" className="relative py-16 md:py-20 px-4 max-w-5xl mx-auto overflow-hidden">
       
       {/* 2. Header Style Terminal */}
-      <div className="flex flex-col items-center mb-20 relative z-10">
+      <div className="flex flex-col items-center mb-10 md:mb-12 relative z-10">
          <motion.div 
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -46,7 +46,7 @@ export default function Experience() {
         {/* Đường kẻ dọc trục giữa (Gradient đẹp hơn) */}
         <div className="absolute left-6 md:left-1/2 top-0 bottom-0 w-[2px] -translate-x-1/2 bg-gradient-to-b from-transparent via-slate-300 dark:via-slate-700 to-transparent" />
 
-        <div className="space-y-16">
+        <div className="space-y-10 md:space-y-12">
           {expData.map((exp, index) => {
             const isRight = index % 2 === 0;
             const Icon = exp.id === "tdtu" ? GraduationCap : Briefcase;

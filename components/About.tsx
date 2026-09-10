@@ -25,7 +25,7 @@ export default function About() {
     <section 
       id="about" 
       ref={ref}
-      className="relative py-32 px-4 overflow-hidden bg-slate-50 dark:bg-[#020617] transition-colors duration-300"
+      className="relative py-16 md:py-20 px-4 overflow-hidden bg-slate-50 dark:bg-[#020617] transition-colors duration-300"
     >
       {/* 1. Background Elements (Giống Projects) */}
       <div className="absolute inset-0 pointer-events-none">
@@ -42,7 +42,7 @@ export default function About() {
       <div className="max-w-5xl mx-auto relative z-10">
         
         {/* 2. Section Header (Style Terminal) */}
-        <div className="flex flex-col items-center mb-16 text-center">
+        <div className="flex flex-col items-center mb-10 md:mb-12 text-center">
              <motion.div 
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}

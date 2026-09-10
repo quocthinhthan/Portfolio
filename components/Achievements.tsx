@@ -10,14 +10,14 @@ export default function Achievements() {
   const { t } = useI18n();
 
   return (
-    <section id="achievements" className="relative py-32 px-4 overflow-hidden">
+    <section id="achievements" className="relative py-16 md:py-20 px-4 overflow-hidden">
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute left-1/2 top-1/3 h-80 w-80 -translate-x-1/2 rounded-full bg-violet-500/10 blur-[110px]" />
         <div className="absolute right-[8%] bottom-0 h-60 w-60 rounded-full bg-sky-500/10 blur-[90px]" />
       </div>
 
       <div className="relative z-10 max-w-5xl mx-auto">
-        <div className="flex flex-col items-center text-center mb-16">
+        <div className="flex flex-col items-center text-center mb-10 md:mb-12">
           <div className="flex items-center gap-2 text-sky-600 dark:text-sky-500 font-mono text-sm tracking-[0.2em] uppercase mb-4">
             <Terminal size={16} />
             <span>{t("achievements.label")}</span>
