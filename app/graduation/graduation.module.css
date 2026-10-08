@@ -73,13 +73,17 @@
 .coverContent { text-align: center; padding: 48px 24px; margin-block: auto; width: min(100%, 850px); position: relative; }
 .coverOrnament { display: flex; justify-content: center; align-items: center; gap: 17px; font-size: 24px; color: var(--gold); margin: 25px 0 23px; }
 .coverOrnament span { width: 40px; height: 1px; background: var(--line); }
-.coverHeading { font-family: var(--serif); font-size: clamp(40px, 5.6vw, 76px); font-weight: 400; line-height: 1.13; letter-spacing: -.045em; }
+.coverHeading { font-family: var(--serif); font-size: clamp(29px, 3.9vw, 53px); font-weight: 400; line-height: 1.13; letter-spacing: -.045em; margin-top: 24px !important; }
 .coverHeading em { color: var(--gold); }
-.recipient { margin-top: 32px; }
-.recipient p { color: var(--muted); font-size: 12px; line-height: 1.8; }
-.recipient strong { display: block; font-size: clamp(16px, 2vw, 22px); text-transform: uppercase; letter-spacing: .14em; font-weight: 500; overflow-wrap: anywhere; line-height: 1.6; max-width: 600px; margin: 9px auto; }
-.recipient p span { display: block; color: var(--ink); font-size: 13px; margin-top: 3px; }
-.recipient .sender { font-size: 14px; margin-bottom: 18px; letter-spacing: .2em; }
+.guestGreeting { position: relative; max-width: 640px; margin-inline: auto; text-align: center; }
+.guestGreetingLabel { font-size: 10px; font-weight: 500; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); }
+.guestGreetingName { font-family: var(--font-guest), 'Cormorant Garamond', serif; font-size: clamp(26.25px, 2.5vw, 33.75px); font-weight: 600; letter-spacing: .025em; line-height: 1.3; color: #8b672b; margin-top: 8px !important; overflow-wrap: anywhere; text-wrap: balance; }
+.guestGreetingRule { display: block; width: 48px; height: 1px; margin: 20px auto 0; background: var(--gold-light); }
+.coverContent .guestGreeting { margin-bottom: 28px; }
+.coverContent .guestGreetingName { font-size: clamp(30px, 2.875vw, 38.75px); }
+.coverSender { margin-top: 28px; }
+.coverSender p { color: var(--muted); font-size: 11px; }
+.coverSender h1 { color: var(--ink); font-size: 30.45px; font-weight: 500; text-transform: uppercase; letter-spacing: .17em; line-height: 1.6; margin-top: 7px; text-wrap: balance; }
 .openButton { display: inline-flex; align-items: center; gap: 32px; border: 1px solid var(--gold-light); background: var(--surface); color: var(--ink); padding: 14px 24px; min-height: 50px; font-size: 12px !important; margin-top: 29px; transition: background .4s, border-color .4s, box-shadow .4s; }
 .openButton:hover { background: var(--surface-warm); border-color: var(--gold); box-shadow: 0 8px 28px #88632912; }
 .openButton svg { color: var(--gold); }
@@ -92,7 +96,7 @@
 .heroDivider { display: flex; align-items: center; justify-content: center; gap: 18px; color: var(--gold); font-size: 22px; margin: 27px auto 30px; }
 .heroDivider span { height: 1px; width: 40px; background: var(--line); }
 .classYear { font-size: 10px; letter-spacing: .36em; color: var(--muted); }
-.studentName { text-transform: uppercase; font-size: clamp(40px, 5.3vw, 76px); font-weight: 500; letter-spacing: .055em; line-height: 1.3; text-wrap: balance; max-width: 1120px; margin: 21px auto 20px !important; }
+.studentName { text-transform: uppercase; font-size: clamp(45.9px, 6.08175vw, 87.21px); font-weight: 500; letter-spacing: .055em; line-height: 1.2; text-wrap: balance; max-width: 1440px; margin: 21px auto 20px !important; }
 .heroDetails { font-size: 13px; color: var(--muted); line-height: 1.9; }
 .heroDetails span { display: block; }
 .yearLine { display: flex; align-items: center; gap: 20px; max-width: 272px; margin: 28px auto; font-size: 10px; letter-spacing: .12em; color: var(--gold); }
@@ -279,7 +283,46 @@
 @keyframes breathe { from { transform: scale(.95); opacity: .7; } to { transform: scale(1.06); opacity: 1; } }
 @keyframes float { from { transform: translateY(0); opacity: .15; } to { transform: translateY(-35px); opacity: .4; } }
 @keyframes cursor { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
-@media (min-width: 1600px) { .hero { min-height: 840px; } }
+/* Fit the cover and hero to laptop height while preserving the mobile layout. */
+@media (min-width: 768px) {
+  .coverTop { padding-top: 24px; }
+  .coverContent { padding-block: 20px; }
+  .coverOrnament { line-height: 1; margin-block: 12px 14px; }
+  .guestGreetingRule { margin-top: 12px; }
+  .coverContent .guestGreeting { margin-bottom: 18px; }
+  .coverSender { margin-top: 20px; }
+  .openButton { margin-top: 20px; }
+  .coverFootnote { margin-top: 12px !important; }
+  .coverBottom { padding-block: 12px 24px; }
+  .hero { min-height: calc(100svh - 86px); padding-block: clamp(16px, 2.5svh, 32px) clamp(12px, 2svh, 24px); }
+  .heroTitle { margin-top: 14px !important; }
+  .heroDivider { line-height: 1; font-size: 20px; margin-block: 12px 14px; }
+  .studentName { margin-block: 12px !important; }
+  .yearLine { margin-block: 16px; }
+  .heroEvent { padding-block: 10px; margin-top: 8px; }
+  .scrollCue { margin-top: 16px; padding-block: 8px; }
+}
+@media (min-width: 768px) and (max-height: 800px) {
+  .coverTop { padding-top: 18px; }
+  .coverContent { padding-block: 12px; }
+  .coverOrnament { font-size: 22px; margin-block: 8px 10px; }
+  .coverHeading { font-size: clamp(29px, 3.4vw, 44px); }
+  .guestGreetingName { font-size: 27.5px; line-height: 1.3; margin-top: 7px !important; }
+  .coverContent .guestGreetingName { font-size: 32.5px; }
+  .guestGreetingRule { margin-top: 8px; }
+  .coverContent .guestGreeting { margin-bottom: 16px; }
+  .openButton { margin-top: 16px; }
+  .coverBottom { padding-block: 8px 18px; }
+  .hero { padding-block: 8px; }
+  .heroTitle { font-size: 38px; margin-top: 10px !important; }
+  .heroDivider { font-size: 18px; margin-block: 8px 12px; }
+  .studentName { font-size: clamp(45.9px, 5.16375vw, 73.44px); line-height: 1.2; margin-block: 8px 10px !important; }
+  .heroDetails { font-size: 12px; line-height: 1.7; }
+  .yearLine { margin-block: 12px; }
+  .emotionalCopy { font-size: 12px; line-height: 1.8; }
+  .heroEvent { padding-block: 6px; margin-top: 6px; }
+  .scrollCue { margin-top: 10px; padding-block: 4px; }
+}
 @media (max-width: 1000px) {
   .section { width: calc(100% - 80px); padding-block: 90px; }
   .portraitSection, .journeySection, .rsvpSection { gap: 48px; }
@@ -298,24 +341,28 @@
   .coverTop { padding: 19px 27px 0; }
   .coverTop > span { font-size: 7px; letter-spacing: .17em; }
   .coverContent { padding: 38px 26px; }
-  .coverHeading { font-size: clamp(36px, 9.5vw, 60px); line-height: 1.17; }
+  .coverHeading { font-size: clamp(26px, 6.8vw, 41px); line-height: 1.17; }
   .coverOrnament { margin-block: 23px; }
-  .recipient { margin-top: 27px; }
-  .recipient strong { font-size: 18px; letter-spacing: .1em; }
-  .recipient .sender { font-size: 11px; letter-spacing: .17em; }
-  .recipient p { font-size: 11px; }
+  .guestGreetingLabel { font-size: 9px; letter-spacing: .16em; }
+  .guestGreetingName { font-size: 26.25px; letter-spacing: .015em; }
+  .coverContent .guestGreetingName { font-size: 28.75px; }
+  .guestGreetingRule { margin-top: 17px; width: 40px; }
+  .coverContent .guestGreeting { margin-bottom: 24px; }
+  .coverSender { margin-top: 25px; }
+  .coverSender h1 { font-size: 26.1px; letter-spacing: .13em; }
   .coverFootnote { font-size: 12px; }
   .coverBottom { padding: 10px 27px 27px; font-size: 8px; justify-content: center; flex-wrap: wrap; gap: 5px 16px; }
   .coverBottom span:last-child { display: none; }
-  .hero { min-height: 720px; padding: 56px 24px 26px; }
+  .hero { min-height: 720px; padding: 32px 24px 20px; }
   .heroTitle { font-size: clamp(29px, 7.5vw, 38px); margin-top: 22px !important; }
-  .heroDivider { margin-block: 23px 26px; font-size: 20px; }
-  .studentName { font-size: clamp(36px, 9.6vw, 54px); letter-spacing: .035em; max-width: 550px; margin: 19px auto 20px !important; }
+  .heroDivider { margin-block: 14px 16px; font-size: 20px; }
+  .studentName { font-size: clamp(41.31px, 11.016vw, 61.965px); letter-spacing: -.02em; max-width: 700px; margin: 19px auto 20px !important; }
+  .hero .yearLine { margin-block: 16px; }
   .heroDetails { font-size: 12px; }
   .emotionalCopy { font-size: 12px; }
   .emotionalCopy br { display: none; }
-  .heroEvent { font-size: 9px; gap: 9px; }
-  .scrollCue { margin-top: 38px; }
+  .heroEvent { font-size: 9px; gap: 9px; padding-block: 10px; margin-top: 10px; }
+  .scrollCue { margin-top: 20px; }
   .portraitSection { grid-template-columns: 1fr; gap: 38px; }
   .portraitFigure { order: -1; margin-right: 15px; padding-left: 12px; }
   .portraitFigure figcaption { flex-direction: row; font-size: 8px; }
@@ -392,7 +439,7 @@
 @media (max-width: 360px) {
   .headerTitle { display: none; }
   .heroTitle { font-size: 28px; }
-  .studentName { font-size: 33px; }
+  .studentName { font-size: 37.8675px; }
   .cardActions { flex-direction: column; }
   .cardActions > a, .cardActions > button { flex: 0 0 auto; }
   .eventGrid { grid-template-columns: 1fr; }

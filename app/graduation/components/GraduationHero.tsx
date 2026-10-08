@@ -2,13 +2,14 @@ import { ArrowDown } from "lucide-react";
 import { graduationConfig as config } from "../graduation.config";
 import { displayDate } from "../utils/calendar";
 import Reveal from "./Reveal";
+import GuestGreeting from "./GuestGreeting";
 import s from "../graduation.module.css";
 
-export default function GraduationHero() {
+export default function GraduationHero({ guestName }: { guestName: string }) {
   return <section id="hero" className={s.hero} aria-labelledby="hero-title">
     <div className={s.heroOrb} aria-hidden />
     <Reveal>
-      <p className={s.eyebrow}>AN ENDING. A BEGINNING. AN INVITATION.</p>
+      <GuestGreeting guestName={guestName} />
       <p className={s.heroTitle}>The Final <em>Commit</em></p>
       <div className={s.heroDivider} aria-hidden><span />✧<span /></div>
       <p className={s.classYear}>CLASS OF {config.student.year}</p>

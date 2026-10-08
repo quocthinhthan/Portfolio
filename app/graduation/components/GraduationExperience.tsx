@@ -46,7 +46,7 @@ export default function GraduationExperience({ guestName }: { guestName: string 
             <a href="#rsvp" className={s.headerRsvp}>Hẹn gặp bạn <ArrowUpRight size={14} aria-hidden /></a>
           </header>
           <main ref={main} tabIndex={-1} className={s.main} aria-label="Thiệp mời tốt nghiệp của Thân Quốc Thịnh">
-            <GraduationHero />
+            <GraduationHero guestName={guestName} />
             <PortraitSection />
             <InvitationCard />
             <Countdown />

@@ -2,6 +2,8 @@
 
 Route: `/graduation`. Personalized example: `/graduation?to=Anh%20Tuấn`.
 
+The sanitized `to` name appears with “Trân trọng kính mời” on both the opening cover and the hero after opening. Include honorifics directly in the name when appropriate (for example, `Thầy Nguyễn Văn An`). Without `to`, both views greet “Quý thầy cô, gia đình & bạn bè”.
+
 The invitation uses a warm-white and champagne-gold palette, with charcoal text and light surfaces throughout. Palette tokens are scoped in `graduation.module.css`; its existing typography is preserved. The Open Graph preview follows the same palette.
 
 This invitation is frontend-only. No backend, database, third-party form service, or response delivery is installed or required.

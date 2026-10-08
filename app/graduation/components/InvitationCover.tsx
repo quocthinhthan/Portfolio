@@ -4,6 +4,7 @@ import { ArrowRight, ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 import { graduationConfig as config } from "../graduation.config";
 import { displayDate } from "../utils/calendar";
+import GuestGreeting from "./GuestGreeting";
 import s from "../graduation.module.css";
 
 export default function InvitationCover({ guestName, onOpen }: { guestName: string; onOpen: () => void }) {
@@ -16,8 +17,9 @@ export default function InvitationCover({ guestName, onOpen }: { guestName: stri
     <div className={s.coverContent}>
       <p className={s.eyebrow}>GRADUATION <span>·</span> {config.student.year}</p>
       <div className={s.coverOrnament} aria-hidden><span />✧<span /></div>
-      <h1 className={s.coverHeading}>A small milestone,<br /><em>a meaningful day.</em></h1>
-      {guestName ? <div className={s.recipient}><p>A special invitation for</p><strong>{guestName}</strong><p>from <span>{config.student.name}</span></p></div> : <div className={s.recipient}><strong className={s.sender}>{config.student.name}</strong><p>To my friends &amp; family,</p><p>I would love to have you<br />at my graduation ceremony.</p></div>}
+      <GuestGreeting guestName={guestName} />
+      <div className={s.coverSender}><p>Đến dự lễ tốt nghiệp của</p><h1>{config.student.name}</h1></div>
+      <p className={s.coverHeading}>A small milestone,<br /><em>a meaningful day.</em></p>
       <button type="button" className={s.openButton} onClick={onOpen}><span>{guestName ? "Mở thiệp" : "Open Invitation"}</span><ArrowRight size={16} aria-hidden /></button>
       <p className={s.coverFootnote}>Made with gratitude. Sent with love.</p>
     </div>
