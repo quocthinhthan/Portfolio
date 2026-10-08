@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { usePathname } from "next/navigation";
 import { motion, useScroll, useMotionValueEvent, AnimatePresence } from "framer-motion";
 import { I18nProvider, useI18n } from "@/components/I18nProvider";
 import { ThemeProvider, useTheme } from "@/components/ThemeProvider";
@@ -14,6 +15,11 @@ export default function ClientShell({
 }: {
   children: React.ReactNode;
 }) {
+  const pathname = usePathname();
+  if (pathname === "/graduation" || pathname.startsWith("/graduation/")) {
+    return <>{children}</>;
+  }
+
   return (
     <I18nProvider>
       <ThemeProvider>
