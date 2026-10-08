@@ -3,6 +3,7 @@ import { ArrowUpRight, CalendarPlus, MapPin } from "lucide-react";
 import { graduationConfig as config } from "../graduation.config";
 import { createCalendarEvent, displayDate, downloadCalendar } from "../utils/calendar";
 import Reveal from "./Reveal";
+import InvitationBorder from "./InvitationBorder";
 import s from "../graduation.module.css";
 
 export default function InvitationCard() {
@@ -11,6 +12,7 @@ export default function InvitationCard() {
   const mapUrl = /^https:\/\/(www\.)?(google\.com|maps\.google\.com|maps\.app\.goo\.gl)\//.test(ceremony.mapUrl) ? ceremony.mapUrl : "";
   return <section id="ceremony" className={s.ceremonySection} aria-labelledby="ceremony-title">
     <Reveal className={s.invitationCard}>
+      <InvitationBorder />
       <p className={s.eyebrow}>YOU&apos;RE INVITED</p>
       <div className={s.cardStar} aria-hidden>✧</div>
       <h2 id="ceremony-title">Lễ tốt nghiệp</h2>
