@@ -22,7 +22,7 @@ export const dictionaries = {
       "Kỹ sư phần mềm tốt nghiệp ĐH Tôn Đức Thắng với GPA 8.48/10. Chuyên sâu về hệ sinh thái .NET (C#, ASP.NET Core), Java (Spring Boot), phân tích nghiệp vụ (BA) và kiến trúc Microservices.",
 
     "about.title": "Về Tôi",
-    "about.p1": "Tốt nghiệp ngành Kỹ thuật Phần mềm với nền tảng học thuật xuất sắc (GPA 8.48/10), tôi định hướng phát triển chuyên sâu trong hai lĩnh vực gắn kết mật thiết: ",
+    "about.p1": "Tốt nghiệp ngành Kỹ thuật Phần mềm với quá trình học tập nghiêm túc (GPA 8.48/10), tôi mong muốn tiếp tục phát triển bản thân ở hai lĩnh vực bổ trợ lẫn nhau: ",
     "about.backend": "Backend Development (.NET / Java) & Business Analysis (BA)",
     "about.p2": "Tôi làm chủ công nghệ backend trọng tâm là .NET (C#, ASP.NET Core) cùng Java (Spring Boot), kết hợp tư duy phân tích nghiệp vụ (BA) để làm cầu nối chuẩn xác giữa yêu cầu bài toán kinh doanh và kiến trúc kỹ thuật tối ưu, dễ mở rộng (Clean Architecture). Tôi đang tìm kiếm vị trí chính thức Backend Developer hoặc Business Analyst để cống hiến và đồng hành phát triển lâu dài cùng doanh nghiệp.",
     
@@ -151,7 +151,7 @@ export const dictionaries = {
       "Software Engineering graduate from Ton Duc Thang University with GPA 8.48/10. Specialized in .NET (C#, ASP.NET Core), Java (Spring Boot), Business Analysis, and scalable backend architectures.",
 
     "about.title": "About Me",
-    "about.p1": "Graduating in Software Engineering with an outstanding GPA (8.48/10), I focus deeply on two complementary domains: ",
+    "about.p1": "Graduating in Software Engineering with a disciplined academic background (GPA 8.48/10), I strive to grow across two complementary domains: ",
     "about.backend": "Backend Development (.NET / Java) & Business Analysis (BA)",
     "about.p2": "I build robust, maintainable backend systems with .NET (C#, ASP.NET Core) and Java (Spring Boot), coupled with a Business Analyst mindset to bridge business requirements and scalable software architecture. I am looking for full-time opportunities as a Backend Developer or Business Analyst to deliver measurable value and grow with forward-thinking teams.",
     "skills.title": "Technical Skills",
