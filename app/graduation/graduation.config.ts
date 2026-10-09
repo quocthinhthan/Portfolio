@@ -6,11 +6,12 @@ export const graduationConfig = {
   siteUrl: "https://thanquocthinh.id.vn",
   sections: {
     showMemories: false, // Set to true when the memory photographs are ready.
+    showGuestbook: false, // Set to true to show the note form and guestbook.
   },
   student: {
     name: "Thân Quốc Thịnh",
-    major: "Software Engineering",
-    university: "Ton Duc Thang University",
+    major: "Cử Nhân Kỹ Thuật Phần Mềm",
+    university: "Đại học Tôn Đức Thắng",
     year: 2026,
     startYear: 2022,
   },

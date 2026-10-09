@@ -1,9 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import Link from "next/link";
 import { AnimatePresence, MotionConfig } from "framer-motion";
-import { ArrowUpRight } from "lucide-react";
+import GraduationHeader from "./GraduationHeader";
 import InvitationCover from "./InvitationCover";
 import GraduationHero from "./GraduationHero";
 import PortraitSection from "./PortraitSection";
@@ -16,6 +15,7 @@ import Guestbook from "./Guestbook";
 import FinalCommit from "./FinalCommit";
 import GraduationFooter from "./GraduationFooter";
 import { graduationConfig as config } from "../graduation.config";
+import { invitationSerif } from "../graduation.font";
 import s from "../graduation.module.css";
 
 export default function GraduationExperience({ guestName }: { guestName: string }) {
@@ -34,17 +34,13 @@ export default function GraduationExperience({ guestName }: { guestName: string 
 
   return (
     <MotionConfig reducedMotion="user">
-      <div className={s.page}>
+      <div className={`${s.page} ${invitationSerif.variable}`}>
         <AnimatePresence onExitComplete={() => setPhase("open")}>
           {phase === "closed" && <InvitationCover key="cover" guestName={guestName} onOpen={() => setPhase("opening")} />}
         </AnimatePresence>
         {phase !== "closed" && <div inert={phase === "opening"} aria-hidden={phase === "opening"}>
           <a href="#ceremony" className={s.skipLink}>Đến thông tin buổi lễ</a>
-          <header className={s.header}>
-            <Link href="/" className={s.brand} aria-label="Về portfolio của Thân Quốc Thịnh">TQT<span>.</span></Link>
-            <a href="#hero" className={s.headerTitle}>A MILESTONE TO SHARE</a>
-            <a href="#rsvp" className={s.headerRsvp}>Hẹn gặp bạn <ArrowUpRight size={14} aria-hidden /></a>
-          </header>
+          <GraduationHeader />
           <main ref={main} tabIndex={-1} className={s.main} aria-label="Thiệp mời tốt nghiệp của Thân Quốc Thịnh">
             <GraduationHero guestName={guestName} />
             <PortraitSection />
@@ -53,7 +49,7 @@ export default function GraduationExperience({ guestName }: { guestName: string 
             <JourneyTimeline />
             {config.sections.showMemories && <MemoryGallery />}
             <RSVP guestName={guestName} />
-            <Guestbook guestName={guestName} />
+            {config.sections.showGuestbook && <Guestbook guestName={guestName} />}
             <FinalCommit />
           </main>
           <GraduationFooter />
