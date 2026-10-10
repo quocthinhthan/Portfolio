@@ -6,7 +6,7 @@ The sanitized `to` name appears with “Trân trọng kính mời” on both the
 
 The invitation uses a warm-white and champagne-gold palette, with charcoal text and light surfaces throughout. Palette tokens are scoped in `graduation.module.css`; its existing typography is preserved. The Open Graph preview follows the same palette.
 
-This invitation is frontend-only. No backend, database, third-party form service, or response delivery is installed or required.
+The invitation has a Google Sheets RSVP backend through a Next.js API route. RSVP is configured as live after successful local write checks; every deployment requires its own server environment variables. See [Google Sheets setup](./GOOGLE_SHEETS_SETUP.md). Set `responses.mode` to `demo` for previews without response delivery.
 
 ## Update the invitation
 
@@ -23,9 +23,9 @@ Edit **graduation.config.ts** for name, class, dates, venue, map link, photos, a
 
 ## Responses
 
-`services/invitation.ts` exposes a typed adapter with `submitRSVP` and `submitNote`. The initial implementation is a **demo**: no network request, persistence, or delivery to the host. This is stated in the forms and confirmation messages. Notes live in React state and disappear on reload.
+`services/invitation.ts` exposes a typed adapter with `submitRSVP` and `submitNote`. RSVP supports `yes`, `maybe`, and `no`. In **demo** mode no responses are sent or saved to the host, and the UI states this. A random response ID is kept in browser storage for future retries/edits, without storing the guest's name or message there. Guestbook notes always remain a separate demo in React state and disappear on reload.
 
-To connect a backend, replace the adapter methods with your API or provider calls, return `{ mode: "live" }` only after a successful write, then change `responses.mode` to `live`. Changing the config alone deliberately fails closed. Validate on the server, add rate limits, and moderate public notes. Keep server secrets out of client modules. Fetch approved notes through your backend when adding persistent guestbook reading.
+To enable real RSVP, deploy `google-sheets/Code.gs`, configure `RSVP_SCRIPT_URL` and `RSVP_SCRIPT_SECRET` on the server, verify writes, then set `responses.mode` to `live`. The API validates input and bounds request size; the script verifies the secret, limits requests with a best-effort cache, and uses a lock to update/append by response ID. Changing the mode alone fails closed. Return `{ mode: "live" }` only after a confirmed write. Guestbook persistence and public note moderation are outside this integration.
 
 ## Optional QR
 
@@ -36,7 +36,7 @@ To connect a backend, replace the adapter methods with your API or provider call
 `npm run lint`, `npm run build`. Utility checks can be run with:
 
 ```sh
-node --experimental-strip-types --test app/graduation/tests/utils.test.mjs
+node --experimental-strip-types --test app/graduation/tests/*.test.mjs
 ```
 
 UI checklist: open cover, keyboard focus, personalized long name, both RSVP responses, note validation, gallery dialog Escape/focus return, reduced motion, 375/390/430/768px and desktop.

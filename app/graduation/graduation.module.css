@@ -241,6 +241,7 @@
 .attendance:disabled label, .attendance input:disabled { cursor: default; }
 .formPanel .demoNotice { border-top: 1px solid var(--line); padding-top: 17px; margin-top: 22px !important; font-size: 9px; }
 .formFields { display: flex; flex-direction: column; margin-top: 27px; }
+.formTrap { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
 .formFields label, .noteForm label { font-size: 11px; color: var(--ink); margin-bottom: 9px; display: block; }
 .formFields label span { color: var(--muted); }
 .formFields input, .formFields textarea, .noteForm input, .noteForm textarea { display: block; width: 100%; border: 1px solid #d2c9b8; background: #fdfcf9; color: var(--ink); padding: 13px 14px; border-radius: 0; font-size: 13px; min-height: 48px; resize: vertical; }
@@ -273,18 +274,6 @@
 .emptyNote p { font-family: var(--serif); font-size: 27px; line-height: 1.5; color: #635f58; }
 .emptyNote .microLabel { display: block; margin-top: 24px; }
 .commitSection { background: var(--surface-warm); border-bottom: 1px solid var(--line); padding: 100px 24px; text-align: center; }
-.terminal { width: min(510px, 100%); margin: 34px auto 50px; padding: 0 27px 26px; text-align: left; border: 1px solid var(--line); background: var(--surface); box-shadow: 0 12px 40px #88632908; font-family: "SFMono-Regular", Consolas, monospace; font-size: 11px; color: #635f58; }
-.terminalBar { display: flex; justify-content: space-between; margin-inline: -27px; padding: 12px 20px; border-bottom: 1px solid var(--line); font-size: 9px; color: var(--muted); }
-.terminalBar > span:first-child { color: var(--gold); letter-spacing: .15em; }
-.terminalCommand { margin-block: 23px 21px !important; color: var(--ink); }
-.terminalCommand > span { color: var(--gold); margin-right: 8px; }
-.commitHash { color: var(--gold); }
-.commitAuthor { margin-top: 4px !important; }
-.terminal ul { list-style: none; padding: 0; margin: 22px 0; }
-.terminal li { display: flex; align-items: center; gap: 9px; margin-block: 5px; }
-.terminal li svg { color: #64754d; }
-.commitStatus { font-size: 10px; color: var(--gold); overflow-wrap: anywhere; }
-.commitStatus > span { color: var(--muted); }
 .commitThanks { font-family: var(--serif); font-size: clamp(32px, 4vw, 48px); line-height: 1.25; }
 .commitThanks em { color: var(--gold); }
 .footer { text-align: center; padding: 100px 56px 28px; background: radial-gradient(ellipse at 50% 45%, #d8bc8426, transparent 60%); }
@@ -450,9 +439,6 @@
   .emptyNote { padding: 30px 0 0; }
   .emptyNote p { font-size: 25px; }
   .commitSection { padding: 72px 24px; }
-  .terminal { padding-inline: 18px; font-size: 10px; margin-bottom: 38px; }
-  .terminalBar { margin-inline: -18px; padding-inline: 18px; }
-  .commitStatus { font-size: 9px; }
   .footer { padding: 70px 24px 25px; }
   .footer h2 { font-size: 57px; }
   .footerName { font-size: 11px; }

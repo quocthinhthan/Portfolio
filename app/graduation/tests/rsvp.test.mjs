@@ -1,0 +1,155 @@
+import { test } from "node:test";
+import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
+import vm from "node:vm";
+import ts from "typescript";
+import { validateRSVP } from "../utils/rsvp.ts";
+import { sanitizeGuestName } from "../utils/guestName.ts";
+
+const responseId = "00000000-0000-4000-8000-000000000001";
+const input = { responseId, attendance: "maybe", name: "Anh Tuấn", message: "Hẹn gặp Thịnh 🤍", website: "" };
+const secret = "test-only-secret-000000000000000000000000";
+
+test("RSVP validates all three statuses, preserves Vietnamese and rejects malformed or bot submissions", () => {
+  for (const attendance of ["yes", "maybe", "no"]) {
+    assert.equal(validateRSVP({ ...input, attendance }).attendance, attendance);
+  }
+  assert.equal(validateRSVP({ ...input, name: "  Anh Tuấn  " }).name, "Anh Tuấn");
+  for (const invalid of [null, [], {}, { ...input, attendance: false }, { ...input, attendance: "pending" },
+    { ...input, name: " " }, { ...input, name: "x".repeat(49) }, { ...input, message: "x".repeat(601) },
+    { ...input, responseId: "Anh Tuấn" }, { ...input, website: "https://bot.example" }]) {
+    assert.throws(() => validateRSVP(invalid));
+  }
+});
+
+function createRoute(fetchImpl, env = { RSVP_SCRIPT_URL: "https://script.google.com/macros/s/test/exec", RSVP_SCRIPT_SECRET: secret }) {
+  const source = readFileSync(new URL("../../api/graduation/rsvp/route.ts", import.meta.url), "utf8");
+  const compiled = ts.transpileModule(source, { compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022 } }).outputText;
+  const exports = {};
+  const context = vm.createContext({
+    exports, Response, URL, Buffer, AbortSignal,
+    process: { env }, fetch: fetchImpl,
+    require: path => path.endsWith("/rsvp") ? { validateRSVP } : { sanitizeGuestName },
+  });
+  vm.runInContext(compiled, context);
+  return exports.POST;
+}
+
+function request(payload = input, headers = {}) {
+  return new Request("https://invitation.example/api/graduation/rsvp", {
+    method: "POST", headers: { "Content-Type": "application/json", Origin: "https://invitation.example", ...headers },
+    body: typeof payload === "string" ? payload : JSON.stringify(payload),
+  });
+}
+
+test("server confirms only a matching successful write and never returns credentials", async () => {
+  let sent;
+  const POST = createRoute(async (url, options) => {
+    assert.equal(url.hostname, "script.google.com");
+    sent = JSON.parse(options.body);
+    return Response.json({ ok: true, responseId });
+  });
+  const result = await POST(request());
+  assert.equal(result.status, 200);
+  assert.deepEqual(await result.json(), { ok: true });
+  assert.equal(sent.secret, secret);
+  assert.equal(sent.attendance, "maybe");
+});
+
+test("server fails closed for misconfiguration, foreign origin, invalid JSON and oversized bodies", async () => {
+  let calls = 0;
+  const fetchImpl = async () => { calls++; throw new Error("should not fetch"); };
+  assert.equal((await createRoute(fetchImpl, {})(request())).status, 503);
+  assert.equal((await createRoute(fetchImpl, { RSVP_SCRIPT_URL: "https://other.example/exec", RSVP_SCRIPT_SECRET: secret })(request())).status, 503);
+  const POST = createRoute(fetchImpl);
+  assert.equal((await POST(request(input, { Origin: "https://other.example" }))).status, 403);
+  assert.equal((await POST(request("invalid json"))).status, 400);
+  assert.equal((await POST(request({ ...input, attendance: true }))).status, 400);
+  assert.equal((await POST(request({ ...input, name: "<script>" }))).status, 400);
+  assert.equal((await POST(request("x".repeat(9000)))).status, 413);
+  assert.equal(calls, 0);
+});
+
+test("server reports upstream errors, unexpected responses and timeouts without claiming success", async () => {
+  for (const reply of [{ ok: false }, { ok: true, responseId: "wrong" }]) {
+    assert.equal((await createRoute(async () => Response.json(reply))(request())).status, 502);
+  }
+  assert.equal((await createRoute(async () => Response.json({ ok: false, code: "rate_limited" }))(request())).status, 429);
+  assert.equal((await createRoute(async () => new Response("Google sign-in HTML"))(request())).status, 502);
+  assert.equal((await createRoute(async () => { throw new Error("timed out"); })(request())).status, 502);
+});
+
+/** Minimal spreadsheet double used to exercise real Apps Script request handling. */
+function createScript() {
+  const rows = [["response_id", "created_at", "updated_at", "name", "attendance", "attendance_label", "message"]];
+  const values = new Map();
+  const properties = new Map([["RSVP_SCRIPT_SECRET", secret], ["SPREADSHEET_ID", "test-sheet"]]);
+  let acquired = false;
+  const sheet = {
+    getLastRow: () => rows.length,
+    getMaxRows: () => 1000,
+    getRange: (row, col, height = 1, width = 1) => ({
+      getValues: () => rows.slice(row - 1, row - 1 + height).map(r => r.slice(col - 1, col - 1 + width)),
+      getValue: () => rows[row - 1]?.[col - 1],
+      setValues: data => { data.forEach((cells, i) => { rows[row - 1 + i] ||= []; cells.forEach((value, j) => { rows[row - 1 + i][col - 1 + j] = value; }); }); },
+      setNumberFormat: () => {},
+      createTextFinder: id => {
+        const finder = { matchEntireCell: () => finder, useRegularExpression: () => finder, findNext: () => {
+          const index = rows.findIndex((r, i) => i >= row - 1 && r[col - 1] === id);
+          return index < 0 ? null : { getRow: () => index + 1 };
+        } };
+        return finder;
+      },
+    }),
+  };
+  const context = vm.createContext({
+    console: { error: () => {} },
+    PropertiesService: { getScriptProperties: () => ({ getProperty: key => properties.get(key) }) },
+    SpreadsheetApp: { openById: () => ({ getSheetByName: () => sheet }), flush: () => { assert.equal(acquired, true); } },
+    LockService: { getScriptLock: () => ({ tryLock: () => { acquired = true; return true; }, releaseLock: () => { acquired = false; } }) },
+    CacheService: { getScriptCache: () => ({ get: key => values.get(key), put: (key, value) => values.set(key, value) }) },
+    ContentService: { MimeType: { JSON: "application/json" }, createTextOutput: data => ({ setMimeType: () => JSON.parse(data) }) },
+  });
+  vm.runInContext(readFileSync(new URL("../google-sheets/Code.gs", import.meta.url), "utf8"), context);
+  return { rows, properties, send: payload => context.doPost({ postData: { contents: JSON.stringify({ ...input, secret, ...payload }) } }), locked: () => acquired };
+}
+
+test("Apps Script records maybe separately; retry and edit update one row, preserving created_at", () => {
+  const script = createScript();
+  assert.equal(script.send({}).ok, true);
+  assert.equal(script.rows.length, 2);
+  assert.equal(script.rows[1][4], "maybe");
+  assert.equal(script.rows[1][5], "Sẽ báo lại");
+  const created = script.rows[1][1];
+  assert.equal(script.send({}).ok, true);
+  assert.equal(script.send({ attendance: "yes", message: "Mình sẽ đến!" }).ok, true);
+  assert.equal(script.rows.length, 2);
+  assert.equal(script.rows[1][1], created);
+  assert.equal(script.rows[1][4], "yes");
+  assert.equal(script.rows[1][5], "Sẽ tham dự");
+  assert.equal(script.rows[1][6], "Mình sẽ đến!");
+  assert.equal(script.locked(), false);
+});
+
+test("Apps Script rejects missing/wrong secret, malformed input and changed headers without writes", () => {
+  const script = createScript();
+  assert.equal(script.send({ secret: "wrong" }).code, "unauthorized");
+  assert.equal(script.send({ attendance: "toString" }).code, "invalid");
+  assert.equal(script.send({ website: "bot" }).code, "invalid");
+  assert.equal(script.rows.length, 1);
+  script.rows[0][4] = "renamed";
+  assert.equal(script.send({}).code, "write_failed");
+  assert.equal(script.locked(), false);
+  assert.equal(script.rows.length, 1);
+});
+
+test("Apps Script writes formula-like guest content as text and limits repeated submissions", () => {
+  const script = createScript();
+  assert.equal(script.send({ name: "-Anh Tuấn", message: '=IMPORTXML("https://example.com")' }).ok, true);
+  assert.equal(script.rows[1][3], "'-Anh Tuấn");
+  assert.equal(script.rows[1][6], '\'=IMPORTXML("https://example.com")');
+  for (let i = 0; i < 5; i++) assert.equal(script.send({}).ok, true);
+  assert.equal(script.send({}).code, "rate_limited");
+  assert.equal(script.rows.length, 2);
+  assert.equal(script.locked(), false);
+});

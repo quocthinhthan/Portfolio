@@ -13,14 +13,14 @@ export default function InvitationCover({ guestName, onOpen }: { guestName: stri
     <div className={s.coverGlow} aria-hidden />
     <div className={s.grain} aria-hidden />
     <div className={s.particles} aria-hidden><i /><i /><i /><i /><i /></div>
-    <div className={s.coverTop}><Link href="/" className={s.brand} aria-label="Về portfolio">TQT<span>.</span></Link><span>A PERSONAL INVITATION</span><ArrowUpRight size={16} aria-hidden /></div>
+    <div className={s.coverTop}><Link href="/" className={s.brand} aria-label="Về portfolio">TQT<span>.DEV</span></Link><span>A PERSONAL INVITATION</span><ArrowUpRight size={16} aria-hidden /></div>
     <div className={s.coverContent}>
       <p className={s.eyebrow}>GRADUATION <span>·</span> {config.student.year}</p>
       <div className={s.coverOrnament} aria-hidden><span />✧<span /></div>
       <GuestGreeting guestName={guestName} />
       <div className={s.coverSender}><p>Đến dự lễ tốt nghiệp của</p><h1>{config.student.name}</h1></div>
       <p className={s.coverHeading}>A small milestone,<br /><em>a meaningful day.</em></p>
-      <button type="button" className={s.openButton} onClick={onOpen}><span>{guestName ? "Mở thiệp" : "Open Invitation"}</span><ArrowRight size={16} aria-hidden /></button>
+      <button type="button" className={s.openButton} onClick={onOpen}><span>{guestName ? "Mở thiệp" : "Mở thiệp"}</span><ArrowRight size={18} aria-hidden /></button>
       <p className={s.coverFootnote}>Made with gratitude. Sent with love.</p>
     </div>
     <div className={s.coverBottom}><span>{displayDate(config.ceremony.date)}{config.ceremony.startTime && ` · ${config.ceremony.startTime}`}</span><span>{config.ceremony.location || "Địa điểm sẽ thông báo"}</span><span>{config.student.startYear} — {config.student.year}</span></div>

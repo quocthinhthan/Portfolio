@@ -1,13 +1,14 @@
 import { graduationConfig } from "../graduation.config";
 import { sanitizeGuestName } from "../utils/guestName";
+import { validateRSVP, responseIdPattern, type RSVPInput } from "../utils/rsvp";
 
-export type RSVPInput = { name: string; message: string; attending: boolean };
+export type { RSVPInput } from "../utils/rsvp";
 export type NoteInput = { name: string; message: string };
 export type GuestNote = NoteInput & { id: string };
 export type SubmissionResult = { mode: "demo" | "live" };
 
 export interface InvitationService {
-  submitRSVP: (input: RSVPInput) => Promise<SubmissionResult>;
+  submitRSVP: (input: RSVPInput & { website: string }) => Promise<SubmissionResult>;
   submitNote: (input: NoteInput) => Promise<SubmissionResult & { note: GuestNote }>;
 }
 
@@ -20,22 +21,42 @@ function validate(input: NoteInput, messageRequired = false): NoteInput {
   return { name, message };
 }
 
-function requireDemo() {
-  if (graduationConfig.responses.mode !== "demo") {
-    throw new Error("Sổ lưu niệm chưa sẵn sàng nhận tin. Bạn thử lại sau nhé.");
-  }
+let memoryResponseId: string | undefined;
+function getResponseId() {
+  if (memoryResponseId) return memoryResponseId;
+  const key = "graduation-2026-rsvp-id";
+  try {
+    const saved = localStorage.getItem(key);
+    if (saved && responseIdPattern.test(saved)) return (memoryResponseId = saved);
+  } catch { /* The current page still supports retries if storage is unavailable. */ }
+  memoryResponseId = crypto.randomUUID();
+  try { localStorage.setItem(key, memoryResponseId); } catch { /* Private browser settings may block storage. */ }
+  return memoryResponseId;
 }
 
-// Replace this adapter with your API/Supabase/Firebase implementation.
-// On the server: validate again, add rate limits, and moderate notes before publishing.
-// Never put privileged API keys in this client-side module.
+// Credentials stay in the server route. Guestbook notes remain a separate demo.
 export const invitationService: InvitationService = {
   async submitRSVP(input) {
-    requireDemo(); validate(input);
-    return { mode: "demo" };
+    const payload = validateRSVP({ ...input, responseId: getResponseId() });
+    if (graduationConfig.responses.mode === "demo") return { mode: "demo" };
+    let response: Response;
+    try {
+      response = await fetch("/api/graduation/rsvp", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+        signal: AbortSignal.timeout(25_000),
+      });
+    } catch {
+      throw new Error("Chưa nhận được xác nhận. Bạn thử gửi lại nhé; phản hồi sẽ không bị lưu trùng.");
+    }
+    const result = await response.json().catch(() => null);
+    if (!response.ok || result?.ok !== true) {
+      throw new Error(result?.error || "Chưa gửi được. Bạn thử lại nhé.");
+    }
+    return { mode: "live" };
   },
   async submitNote(input) {
-    requireDemo();
     const clean = validate(input, true);
     return { mode: "demo", note: { ...clean, id: crypto.randomUUID() } };
   },
