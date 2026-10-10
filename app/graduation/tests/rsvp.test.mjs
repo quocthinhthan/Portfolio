@@ -5,9 +5,13 @@ import vm from "node:vm";
 import ts from "typescript";
 import { validateRSVP } from "../utils/rsvp.ts";
 import { sanitizeGuestName } from "../utils/guestName.ts";
+import { lookupInvitation } from "../utils/invitations.ts";
 
-const responseId = "00000000-0000-4000-8000-000000000001";
-const input = { responseId, attendance: "maybe", name: "Anh Tuấn", message: "Hẹn gặp Thịnh 🤍", website: "" };
+const invitationId = "00000000-0000-4000-8000-000000000001";
+const responseId = `invite_${invitationId}`;
+const invitation = { id: invitationId, name: "Trần Khải Tấn", slug: "tran-khai-tan", token: "Ab12Cd", active: true };
+const input = { invitationToken: invitation.token, attendance: "maybe", name: "Anh Tuấn", message: "Hẹn gặp Thịnh 🤍", website: "" };
+const acknowledgement = { ok: true, responseId, invitationId, schemaVersion: 2 };
 const secret = "test-only-secret-000000000000000000000000";
 
 test("RSVP validates all three statuses, preserves Vietnamese and rejects malformed or bot submissions", () => {
@@ -17,7 +21,7 @@ test("RSVP validates all three statuses, preserves Vietnamese and rejects malfor
   assert.equal(validateRSVP({ ...input, name: "  Anh Tuấn  " }).name, "Anh Tuấn");
   for (const invalid of [null, [], {}, { ...input, attendance: false }, { ...input, attendance: "pending" },
     { ...input, name: " " }, { ...input, name: "x".repeat(49) }, { ...input, message: "x".repeat(601) },
-    { ...input, responseId: "Anh Tuấn" }, { ...input, website: "https://bot.example" }]) {
+    { ...input, invitationToken: "Anh Tuấn" }, { ...input, invitationToken: undefined }, { ...input, website: "https://bot.example" }]) {
     assert.throws(() => validateRSVP(invalid));
   }
 });
@@ -29,7 +33,7 @@ function createRoute(fetchImpl, env = { RSVP_SCRIPT_URL: "https://script.google.
   const context = vm.createContext({
     exports, Response, URL, Buffer, AbortSignal,
     process: { env }, fetch: fetchImpl,
-    require: path => path.endsWith("/rsvp") ? { validateRSVP } : { sanitizeGuestName },
+    require: path => path.endsWith("/rsvp") ? { validateRSVP } : path.includes("/server/") ? { findInvitation: token => lookupInvitation([invitation, { ...invitation, token: "Off123", active: false }], token) } : { sanitizeGuestName },
   });
   vm.runInContext(compiled, context);
   return exports.POST;
@@ -47,13 +51,31 @@ test("server confirms only a matching successful write and never returns credent
   const POST = createRoute(async (url, options) => {
     assert.equal(url.hostname, "script.google.com");
     sent = JSON.parse(options.body);
-    return Response.json({ ok: true, responseId });
+    return Response.json(acknowledgement);
   });
   const result = await POST(request());
   assert.equal(result.status, 200);
   assert.deepEqual(await result.json(), { ok: true });
   assert.equal(sent.secret, secret);
   assert.equal(sent.attendance, "maybe");
+  assert.equal(sent.invitationId, invitation.id);
+  assert.equal(sent.invitedName, invitation.name);
+  assert.equal("invitationToken" in sent, false);
+});
+
+test("server ignores spoofed recipient names/IDs and rejects unknown or revoked tokens before writing", async () => {
+  let calls = 0;
+  const POST = createRoute(async (_url, options) => {
+    calls++;
+    const sent = JSON.parse(options.body);
+    assert.equal(sent.invitedName, invitation.name);
+    assert.equal(sent.invitationId, invitationId);
+    assert.equal(sent.responseId, responseId);
+    return Response.json(acknowledgement);
+  });
+  assert.equal((await POST(request({ ...input, invitedName: "Other person", invitationId: "fake", responseId: "fake" }))).status, 200);
+  for (const invitationToken of ["Bad123", "Off123", "ab12cd"]) assert.equal((await POST(request({ ...input, invitationToken }))).status, 403);
+  assert.equal(calls, 1);
 });
 
 test("server fails closed for misconfiguration, foreign origin, invalid JSON and oversized bodies", async () => {
@@ -71,23 +93,25 @@ test("server fails closed for misconfiguration, foreign origin, invalid JSON and
 });
 
 test("server reports upstream errors, unexpected responses and timeouts without claiming success", async () => {
-  for (const reply of [{ ok: false }, { ok: true, responseId: "wrong" }]) {
+  for (const reply of [{ ...acknowledgement, ok: false }, { ...acknowledgement, responseId: "wrong" }, { ...acknowledgement, invitationId: "wrong" }]) {
     assert.equal((await createRoute(async () => Response.json(reply))(request())).status, 502);
   }
+  assert.equal((await createRoute(async () => Response.json({ ok: true, responseId }))(request())).status, 503);
   assert.equal((await createRoute(async () => Response.json({ ok: false, code: "rate_limited" }))(request())).status, 429);
   assert.equal((await createRoute(async () => new Response("Google sign-in HTML"))(request())).status, 502);
   assert.equal((await createRoute(async () => { throw new Error("timed out"); })(request())).status, 502);
 });
 
 /** Minimal spreadsheet double used to exercise real Apps Script request handling. */
-function createScript() {
-  const rows = [["response_id", "created_at", "updated_at", "name", "attendance", "attendance_label", "message"]];
+function createScript(initialRows) {
+  const rows = initialRows || [["response_id", "created_at", "updated_at", "name", "attendance", "attendance_label", "message", "invitation_id", "invited_name"]];
   const values = new Map();
   const properties = new Map([["RSVP_SCRIPT_SECRET", secret], ["SPREADSHEET_ID", "test-sheet"]]);
   let acquired = false;
   const sheet = {
     getLastRow: () => rows.length,
     getMaxRows: () => 1000,
+    insertColumnsAfter: (column, count) => rows.forEach(row => row.splice(column, 0, ...Array(count).fill(""))),
     getRange: (row, col, height = 1, width = 1) => ({
       getValues: () => rows.slice(row - 1, row - 1 + height).map(r => r.slice(col - 1, col - 1 + width)),
       getValue: () => rows[row - 1]?.[col - 1],
@@ -111,7 +135,7 @@ function createScript() {
     ContentService: { MimeType: { JSON: "application/json" }, createTextOutput: data => ({ setMimeType: () => JSON.parse(data) }) },
   });
   vm.runInContext(readFileSync(new URL("../google-sheets/Code.gs", import.meta.url), "utf8"), context);
-  return { rows, properties, send: payload => context.doPost({ postData: { contents: JSON.stringify({ ...input, secret, ...payload }) } }), locked: () => acquired };
+  return { rows, properties, send: payload => context.doPost({ postData: { contents: JSON.stringify({ ...input, secret, schemaVersion: 2, responseId, invitationId, invitedName: invitation.name, ...payload }) } }), locked: () => acquired, migrate: () => context.migrateHeaders_(sheet) };
 }
 
 test("Apps Script records maybe separately; retry and edit update one row, preserving created_at", () => {
@@ -128,6 +152,8 @@ test("Apps Script records maybe separately; retry and edit update one row, prese
   assert.equal(script.rows[1][4], "yes");
   assert.equal(script.rows[1][5], "Sẽ tham dự");
   assert.equal(script.rows[1][6], "Mình sẽ đến!");
+  assert.equal(script.rows[1][7], invitationId);
+  assert.equal(script.rows[1][8], invitation.name);
   assert.equal(script.locked(), false);
 });
 
@@ -152,4 +178,24 @@ test("Apps Script writes formula-like guest content as text and limits repeated 
   assert.equal(script.send({}).code, "rate_limited");
   assert.equal(script.rows.length, 2);
   assert.equal(script.locked(), false);
+});
+
+test("migration preserves old rows and owner notes, and does not add columns twice", () => {
+  const oldHeaders = ["response_id", "created_at", "updated_at", "name", "attendance", "attendance_label", "message"];
+  const oldData = ["old-id", "old-created", "old-updated", "Old guest", "yes", "Sẽ tham dự", "Old message"];
+  const script = createScript([[...oldHeaders, "Ghi chú riêng"], [...oldData, "Keep me"]]);
+  script.migrate();
+  assert.deepEqual(script.rows[1].slice(0, 7), oldData);
+  assert.deepEqual(script.rows[0].slice(7), ["invitation_id", "invited_name", "Ghi chú riêng"]);
+  assert.equal(script.rows[1][9], "Keep me");
+  script.migrate();
+  assert.equal(script.rows[0].length, 10);
+  assert.equal(script.locked(), false);
+});
+
+test("new Apps Script rejects legacy unverified requests instead of writing unsigned RSVP", () => {
+  const script = createScript();
+  assert.equal(script.send({ schemaVersion: 1 }).code, "invalid");
+  assert.equal(script.send({ responseId: invitationId }).code, "invalid");
+  assert.equal(script.rows.length, 1);
 });

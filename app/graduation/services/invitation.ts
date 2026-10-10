@@ -1,6 +1,6 @@
 import { graduationConfig } from "../graduation.config";
 import { sanitizeGuestName } from "../utils/guestName";
-import { validateRSVP, responseIdPattern, type RSVPInput } from "../utils/rsvp";
+import { validateRSVP, type RSVPRequest } from "../utils/rsvp";
 
 export type { RSVPInput } from "../utils/rsvp";
 export type NoteInput = { name: string; message: string };
@@ -8,7 +8,7 @@ export type GuestNote = NoteInput & { id: string };
 export type SubmissionResult = { mode: "demo" | "live" };
 
 export interface InvitationService {
-  submitRSVP: (input: RSVPInput & { website: string }) => Promise<SubmissionResult>;
+  submitRSVP: (input: RSVPRequest) => Promise<SubmissionResult>;
   submitNote: (input: NoteInput) => Promise<SubmissionResult & { note: GuestNote }>;
 }
 
@@ -21,23 +21,10 @@ function validate(input: NoteInput, messageRequired = false): NoteInput {
   return { name, message };
 }
 
-let memoryResponseId: string | undefined;
-function getResponseId() {
-  if (memoryResponseId) return memoryResponseId;
-  const key = "graduation-2026-rsvp-id";
-  try {
-    const saved = localStorage.getItem(key);
-    if (saved && responseIdPattern.test(saved)) return (memoryResponseId = saved);
-  } catch { /* The current page still supports retries if storage is unavailable. */ }
-  memoryResponseId = crypto.randomUUID();
-  try { localStorage.setItem(key, memoryResponseId); } catch { /* Private browser settings may block storage. */ }
-  return memoryResponseId;
-}
-
 // Credentials stay in the server route. Guestbook notes remain a separate demo.
 export const invitationService: InvitationService = {
   async submitRSVP(input) {
-    const payload = validateRSVP({ ...input, responseId: getResponseId() });
+    const payload = validateRSVP(input);
     if (graduationConfig.responses.mode === "demo") return { mode: "demo" };
     let response: Response;
     try {

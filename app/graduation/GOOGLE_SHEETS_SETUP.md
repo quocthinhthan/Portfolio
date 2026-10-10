@@ -1,5 +1,7 @@
 # Thiết lập RSVP với Google Sheets
 
+**Phiên bản hiện tại dùng link mời riêng.** Làm theo [INVITATIONS_SETUP.md](./INVITATIONS_SETUP.md) để tạo link và nâng cấp Apps Script đã có. API yêu cầu token hợp lệ; link `?to=...` cũ không nhận RSVP.
+
 Form có ba lựa chọn, theo thứ tự:
 
 1. **Chắc chắn rồi** — Mình sẽ đến chung vui cùng Thịnh.
@@ -23,17 +25,19 @@ Không cần tự gõ header, tạo công thức hoặc tạo secret. Chạy l�
 
 | Cột | Field | Ý nghĩa |
 |---|---|---|
-| A | `response_id` | Mã ngẫu nhiên giữ trong trình duyệt, dùng để gửi lại/chỉnh phản hồi |
+| A | `response_id` | `invite_<UUID>` của lời mời, dùng để đối chiếu phản hồi |
 | B | `created_at` | Thời gian gửi lần đầu |
 | C | `updated_at` | Thời gian cập nhật gần nhất |
 | D | `name` | Tên khách nhập |
 | E | `attendance` | `yes`, `maybe` hoặc `no` |
 | F | `attendance_label` | Sẽ tham dự / Sẽ báo lại / Không tham dự |
 | G | `message` | Lời nhắn, có thể trống |
+| H | `invitation_id` | Mã lời mời ổn định, dùng để cập nhật cùng dòng trên mọi thiết bị |
+| I | `invited_name` | Tên chuẩn của người được mời do server tra từ file registry |
 
 **TongQuan** tự đếm riêng cả ba trạng thái và tổng phản hồi. Số “Sẽ tham dự” là số phản hồi xác nhận, không phải tổng số người đi cùng; bản đầu chưa có field người đi cùng.
 
-Giữ nguyên tên tab `RSVP`, tiêu đề và thứ tự A:G. Bạn có thể lọc/sắp xếp toàn bộ bảng; đừng sắp xếp một cột độc lập. Có thể thêm cột ghi chú cá nhân từ H trở đi, script không ghi vào chúng. Không công khai các lời nhắn trên website.
+Giữ nguyên tên tab `RSVP`, tiêu đề và thứ tự A:I. Bạn có thể lọc/sắp xếp toàn bộ bảng; đừng sắp xếp một cột độc lập. Có thể thêm cột ghi chú cá nhân từ J trở đi. Nâng cấp bằng `setupRSVP` sẽ chèn H:I và giữ các ghi chú cũ ở J trở đi. Không công khai các lời nhắn trên website.
 
 ## 3. Deploy Apps Script
 
@@ -95,20 +99,20 @@ Sau khi nhận cấu hình, Codex có thể kiểm tra kết nối ở local, g�
 Có thể thử API ngay cả khi form còn ở demo. Với dev server đang chạy (`npm run dev`), mở terminal thứ hai ở gốc dự án và chạy:
 
 ```sh
-node app/graduation/google-sheets/test-rsvp.mjs
+node app/graduation/google-sheets/test-rsvp.mjs http://localhost:3000 TOKEN6
 ```
 
-Script gửi 4 request cùng một `response_id`: tạo maybe, retry maybe, cập nhật yes và cập nhật no. Kiểm tra **chỉ một dòng** tên `TEST RSVP local` cho mã được in ra, trạng thái cuối là `no`, label `Không tham dự`; `created_at` giữ nguyên. Script không tự xóa dòng thử. Mỗi lần chạy lại script sẽ tạo mã thử mới.
+Thêm lời mời `{ "name": "TEST RSVP" }` vào registry, chạy `npm run invitations:generate` và dùng token đó thay `TOKEN6`. Script từ chối token của khách thật. Nó gửi 4 request cùng lời mời: maybe, retry maybe, yes và no. Kiểm tra **chỉ một dòng** cho `invitation_id` được in ra, trạng thái cuối `no`, `invited_name` đúng và `created_at` giữ nguyên. Chạy lại với cùng token cập nhật cùng dòng; script không tự xóa dòng thử.
 
 Sau khi deploy/redeploy code và hai biến môi trường production, có thể thử tương tự trên domain:
 
 ```sh
-node app/graduation/google-sheets/test-rsvp.mjs https://thanquocthinh.id.vn
+node app/graduation/google-sheets/test-rsvp.mjs https://thanquocthinh.id.vn TOKEN6
 ```
 
 Nếu nhận HTTP `404`, bản production chưa có route API RSVP: deploy commit chứa `app/api/graduation/rsvp/route.ts`. HTTP `503` thường là thiếu/sai cấu hình biến môi trường; HTTP `502` là Google chưa xác nhận ghi, cần kiểm tra deployment `/exec`, quyền Anyone và secret trùng nhau. Không gửi secret trong chat hoặc screenshot lỗi. Restart/redeploy sau khi chỉnh biến môi trường.
 
-Sau khi API ghi thành công, bật `responses.mode` thành `live` nếu chưa bật. Mở `/graduation`, chọn một trạng thái, nhập tên thử và gửi bằng form; “Chỉnh lại phản hồi” cho phép sửa cùng dòng từ cùng trình duyệt. Bản production cũng phải được redeploy sau khi bật live.
+Sau khi API ghi thành công, bật `responses.mode` thành `live` nếu chưa bật. Mở link riêng trong `LINKS.md`, chọn trạng thái và gửi bằng form; “Chỉnh lại phản hồi” hoặc mở cùng link từ thiết bị khác đều cập nhật cùng dòng. `/graduation` là bản xem chung và không nhận RSVP.
 
 - Gửi một phản hồi “Sẽ báo lại”; thấy một dòng có `attendance = maybe`, label đúng và TongQuan tăng một.
 - Chọn “Chỉnh lại phản hồi”, chuyển thành “Chắc chắn rồi”; vẫn một dòng, `created_at` giữ nguyên, `updated_at` thay đổi, số đếm chuyển từ maybe sang yes.
@@ -116,7 +120,7 @@ Sau khi API ghi thành công, bật `responses.mode` thành `live` nếu chưa b
 - Retry sau lỗi mạng dùng cùng response ID: không thêm dòng trùng. Không báo thành công nếu Google trả lỗi, hết quota hoặc không xác nhận được ghi.
 - Thử trên điện thoại và production sau khi redeploy.
 
-Mỗi trình duyệt có một mã RSVP cho sự kiện này; reload cùng trình duyệt rồi gửi lại cập nhật dòng cũ, nhưng không tự tải lại nội dung từ Sheet. Khác thiết bị/trình duyệt, xóa storage hoặc không cho phép lưu storage sẽ có thể tạo phản hồi mới. Hai người dùng chung trình duyệt sẽ cập nhật cùng dòng. Mã này dùng để sửa phản hồi, không phải xác minh danh tính khách.
+Mỗi lời mời có một UUID và token ổn định trên server. Gửi cùng link từ bất kỳ thiết bị nào cập nhật cùng dòng; hai link khác nhau trên cùng trình duyệt vẫn là hai lời mời. Form không tự đọc lại nội dung từ Sheet. Người có link có thể gửi thay khách; link không phải đăng nhập xác minh danh tính.
 
 Script dùng lock khi tìm/ghi dòng để tránh retry đồng thời bị trùng. Chống spam cơ bản: honeypot, kiểm tra dữ liệu, body tối đa 8 KB ở API, giới hạn 6 request/mã/phút và 120 request tổng/phút qua Script Cache. Cache có thể bị Google thu hồi sớm nên giới hạn này là best-effort; khi cần bảo vệ mạnh hơn, cấu hình rate limit/WAF trên hosting hoặc CAPTCHA xác minh ở server. Origin check không phải cơ chế xác thực khách.
 

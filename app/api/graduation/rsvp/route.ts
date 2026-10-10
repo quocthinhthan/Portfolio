@@ -1,5 +1,6 @@
 import { validateRSVP } from "../../../graduation/utils/rsvp";
 import { sanitizeGuestName } from "../../../graduation/utils/guestName";
+import { findInvitation } from "../../../graduation/server/invitations";
 
 export const runtime = "nodejs";
 
@@ -43,18 +44,27 @@ export async function POST(request: Request) {
     return failure(error instanceof SyntaxError ? "Phản hồi không hợp lệ." : error instanceof Error ? error.message : "Phản hồi không hợp lệ.", 400);
   }
 
+  const invitation = findInvitation(input.invitationToken);
+  if (!invitation) return failure("Đường dẫn thiệp không hợp lệ hoặc đã ngừng nhận phản hồi.", 403);
+  const responseId = `invite_${invitation.id}`;
+
   try {
     const upstream = await fetch(url, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ ...input, secret }),
+      // Ignore all client-supplied IDs/recipient names; never forward the bearer token.
+      body: JSON.stringify({
+        schemaVersion: 2, responseId, invitationId: invitation.id, invitedName: invitation.name,
+        name: input.name, message: input.message, attendance: input.attendance, website: "", secret,
+      }),
       signal: AbortSignal.timeout(20_000),
       cache: "no-store",
       redirect: "follow",
     });
     const result = await upstream.json();
     if (result?.code === "rate_limited") return failure("Bạn vừa gửi nhiều phản hồi. Chờ một phút rồi thử lại nhé.", 429);
-    if (!upstream.ok || result?.ok !== true || result?.responseId !== input.responseId) return failure(unavailable, 502);
+    if (result?.schemaVersion !== 2) return failure("Phần nhận phản hồi đang được cập nhật. Bạn thử lại sau nhé.", 503);
+    if (!upstream.ok || result?.ok !== true || result?.responseId !== responseId || result?.invitationId !== invitation.id) return failure(unavailable, 502);
     return Response.json({ ok: true }, { headers: { "Cache-Control": "no-store" } });
   } catch {
     return failure("Chưa nhận được xác nhận. Bạn thử gửi lại nhé; phản hồi sẽ không bị lưu trùng.", 502);

@@ -1,0 +1,61 @@
+{
+  "version": 1,
+  "invitations": [
+    {
+      "id": "3486c978-ffed-4a88-9bc8-3364cb46995f",
+      "name": "Trần Khải Tấn",
+      "slug": "tran-khai-tan",
+      "token": "0DRkRN",
+      "active": true
+    },
+    {
+      "id": "a266ec59-c228-489f-921b-443a54e8ad7b",
+      "name": "Nguyễn Thiện Khánh Trang",
+      "slug": "nguyen-thien-khanh-trang",
+      "token": "PhzZ2U",
+      "active": true
+    },
+    {
+      "id": "9e535281-dee9-4ca9-953e-db9c5d7ba3a9",
+      "name": "Lưu Hữu Trí",
+      "slug": "luu-huu-tri",
+      "token": "AlmasA",
+      "active": true
+    },
+    {
+      "id": "5a5dede2-f862-41a2-bad8-4342f3ea5eac",
+      "name": "Trần Đức Tuấn",
+      "slug": "tran-duc-tuan",
+      "token": "WAzhYl",
+      "active": true
+    },
+    {
+      "id": "16191ee1-32db-4eb7-aaf5-d981b006d04d",
+      "name": "Châu Nguyễn Khánh Trình",
+      "slug": "chau-nguyen-khanh-trinh",
+      "token": "MnXYbb",
+      "active": true
+    },
+    {
+      "id": "cd0ce98e-bb81-49a5-89b4-1f6694e08795",
+      "name": "Ngô Phan Minh Trí",
+      "slug": "ngo-phan-minh-tri",
+      "token": "j9ES9K",
+      "active": true
+    },
+    {
+      "id": "d3e0566a-877e-4e62-a0d7-445d36a5cf39",
+      "name": "Tạ Triết",
+      "slug": "ta-triet",
+      "token": "jIjzRm",
+      "active": true
+    },
+    {
+      "id": "fd5042af-9aaf-4b93-bfde-ba315731c4fc",
+      "name": "Hỷ Phú Hưng",
+      "slug": "hy-phu-hung",
+      "token": "MCcRDW",
+      "active": true
+    }
+  ]
+}

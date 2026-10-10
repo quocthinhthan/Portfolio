@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "invitations:generate": "node --experimental-strip-types app/graduation/scripts/generate-invitations.mjs"
   },
   "dependencies": {
     "canvas-confetti": "^1.9.4",

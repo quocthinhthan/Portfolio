@@ -51,8 +51,9 @@ test("guest names preserve Vietnamese while removing markup, controls and excess
   assert.equal(sanitizeGuestName("Minh\u202e\u0000"), "Minh");
   assert.equal(sanitizeGuestName(null), "");
   assert.equal(Array.from(sanitizeGuestName("Thịnh".repeat(100))).length, 48);
-  const url = new URL(createInvitationUrl("https://example.com", "Anh Tuấn"));
-  assert.equal(url.pathname, "/graduation");
-  assert.equal(url.searchParams.get("to"), "Anh Tuấn");
-  assert.equal(createInvitationUrl("https://example.com", "<>"), "https://example.com/graduation");
+  const url = new URL(createInvitationUrl("https://example.com", { slug: "anh-tuan", token: "Ab12Cd" }));
+  assert.equal(url.pathname, "/graduation/anh-tuan/Ab12Cd");
+  assert.equal(url.searchParams.has("to"), false);
+  assert.equal(createInvitationUrl("https://example.com"), "https://example.com/graduation");
+  assert.throws(() => createInvitationUrl("https://example.com", { slug: "../other", token: "Ab12Cd" }));
 });

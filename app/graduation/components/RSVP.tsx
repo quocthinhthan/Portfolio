@@ -26,7 +26,7 @@ const replies = {
   },
 };
 
-export default function RSVP({ guestName }: { guestName: string }) {
+export default function RSVP({ guestName, invitationToken }: { guestName: string; invitationToken?: string }) {
   const [attendance, setAttendance] = useState<AttendanceStatus | null>(null);
   const [pending, setPending] = useState(false);
   const [error, setError] = useState("");
@@ -38,12 +38,12 @@ export default function RSVP({ guestName }: { guestName: string }) {
   useEffect(() => { if (result) successRef.current?.focus({ preventScroll: true }); }, [result]);
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    if (attendance === null || busy.current) return;
+    if (attendance === null || busy.current || !invitationToken) return;
     busy.current = true; setPending(true); setError("");
     const data = new FormData(event.currentTarget);
     const input = { name: String(data.get("name") || ""), message: String(data.get("message") || "") };
     setDraft(input);
-    try { setResult(await invitationService.submitRSVP({ ...input, attendance, website: String(data.get("website") || "") })); }
+    try { setResult(await invitationService.submitRSVP({ ...input, attendance, invitationToken, website: String(data.get("website") || "") })); }
     catch (error) { setError(error instanceof Error ? error.message : "Chưa gửi được. Bạn thử lại nhé."); }
     finally { busy.current = false; setPending(false); }
   }
@@ -51,7 +51,8 @@ export default function RSVP({ guestName }: { guestName: string }) {
     <Reveal className={s.rsvpIntro}><SectionLabel>SAVE A LITTLE TIME FOR ME</SectionLabel><h2 id="rsvp-title" className={s.editorialTitle}>Will I see<br /><em>you there?</em></h2><p className={s.bodyCopy}>Một cái ôm, một tấm ảnh,<br />một kỷ niệm có bạn trong đó.<br />Thịnh rất mong được gặp bạn.</p><Heart size={23} strokeWidth={1} className={s.rsvpHeart} aria-hidden /></Reveal>
     <Reveal className={s.formPanel}>
       <div className={s.rsvpPanelHeader}><span>YOUR REPLY</span><span aria-hidden>✧</span></div>
-      {result ? <div ref={successRef} className={s.success} role="status" tabIndex={-1}><span className={s.successIcon}><Check size={26} aria-hidden /></span><p className={s.eyebrow}>{reply?.eyebrow}</p><h3>{reply?.title}</h3><p>{reply?.message}</p>{result.mode === "demo" && <p className={s.demoNotice}>Đây là xác nhận demo. Phản hồi chưa được gửi đến Thịnh và sẽ mất khi tải lại trang.</p>}<button className={s.textButton} onClick={() => setResult(null)}>Chỉnh lại phản hồi <ArrowRight size={14} aria-hidden /></button></div> : <form onSubmit={submit} aria-busy={pending}>
+      {invitationToken && <p className={s.invitedGuest}>Thiệp dành cho <strong>{guestName}</strong></p>}
+      {!invitationToken ? <p className={s.bodyCopy}>Để xác nhận tham dự, bạn hãy mở đường dẫn thiệp Thịnh đã gửi riêng cho bạn nhé.</p> : result ? <div ref={successRef} className={s.success} role="status" tabIndex={-1}><span className={s.successIcon}><Check size={26} aria-hidden /></span><p className={s.eyebrow}>{reply?.eyebrow}</p><h3>{reply?.title}</h3><p>{reply?.message}</p>{result.mode === "demo" && <p className={s.demoNotice}>Đây là xác nhận demo. Phản hồi chưa được gửi đến Thịnh và sẽ mất khi tải lại trang.</p>}<button className={s.textButton} onClick={() => setResult(null)}>Chỉnh lại phản hồi <ArrowRight size={14} aria-hidden /></button></div> : <form onSubmit={submit} aria-busy={pending}>
         <div className={s.formTrap} aria-hidden="true"><label htmlFor="rsvp-website">Website</label><input id="rsvp-website" name="website" type="text" autoComplete="off" tabIndex={-1} /></div>
         <fieldset className={s.attendance} disabled={pending}>
           <legend>Bạn sẽ đến chứ?</legend>
@@ -72,7 +73,7 @@ export default function RSVP({ guestName }: { guestName: string }) {
             <input type="radio" name="attendance" value="no" required checked={attendance === "no"} onChange={() => setAttendance("no")} aria-label="Tiếc quá, mình không thể đến" />
           </label>
         </fieldset>
-        {attendance !== null && <div className={s.formFields}><label htmlFor="rsvp-name">Tên của bạn <span>*</span></label><input id="rsvp-name" name="name" autoComplete="name" required maxLength={48} defaultValue={draft.name} placeholder="Để Thịnh nhận ra bạn nhé" disabled={pending} /><label htmlFor="rsvp-message">Lời nhắn cho Thịnh <span>(không bắt buộc)</span></label><textarea id="rsvp-message" name="message" maxLength={600} rows={3} defaultValue={draft.message} placeholder="Một lời nhắn nhỏ…" disabled={pending} /><button className={s.primaryButton} disabled={pending} type="submit">{pending ? "Đang xác nhận…" : "Gửi phản hồi"}<ArrowRight size={16} aria-hidden /></button></div>}
+        {attendance !== null && <div className={s.formFields}><label htmlFor="rsvp-name">Tên người gửi <span>*</span></label><input id="rsvp-name" name="name" autoComplete="name" required maxLength={48} defaultValue={draft.name} placeholder="Để Thịnh nhận ra bạn nhé" disabled={pending} /><label htmlFor="rsvp-message">Lời nhắn cho Thịnh <span>(không bắt buộc)</span></label><textarea id="rsvp-message" name="message" maxLength={600} rows={3} defaultValue={draft.message} placeholder="Một lời nhắn nhỏ…" disabled={pending} /><button className={s.primaryButton} disabled={pending} type="submit">{pending ? "Đang xác nhận…" : "Gửi phản hồi"}<ArrowRight size={16} aria-hidden /></button></div>}
         {error && <p className={s.formError} role="alert">{error}</p>}
         {config.responses.mode === "demo" && <p className={s.demoNotice}>Bản xem trước · Phản hồi chưa được gửi hoặc lưu lại.</p>}
       </form>}

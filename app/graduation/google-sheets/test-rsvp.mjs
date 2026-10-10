@@ -1,19 +1,22 @@
-/** Real smoke test: writes one synthetic RSVP, then retries/updates the same ID.
+/** Real smoke test: uses an existing invitation named TEST ..., then retries/updates it.
  * Run with the Next.js server running:
- *   node app/graduation/google-sheets/test-rsvp.mjs
- *   node app/graduation/google-sheets/test-rsvp.mjs https://your-domain.example
+ *   node app/graduation/google-sheets/test-rsvp.mjs http://localhost:3000 TOKEN6
+ *   node app/graduation/google-sheets/test-rsvp.mjs https://your-domain.example TOKEN6
  * No Google credentials are read or printed by this script.
  */
-import { randomUUID } from "node:crypto";
+import { readFile } from "node:fs/promises";
 
 const base = new URL(process.argv[2] || "http://localhost:3000");
 if (base.protocol !== "https:" && !(base.protocol === "http:" && ["localhost", "127.0.0.1"].includes(base.hostname))) {
   throw new Error("Use HTTPS for a public site, or HTTP for localhost.");
 }
 const endpoint = new URL("/api/graduation/rsvp", base);
-const responseId = randomUUID();
+const invitationToken = process.argv[3];
+const registry = JSON.parse(await readFile(new URL("../invitations/registry.json", import.meta.url), "utf8"));
+const invitation = registry.invitations.find(entry => entry.active && entry.token === invitationToken && /^TEST\b/i.test(entry.name));
+if (!invitation) throw new Error("Create a TEST RSVP invitation in registry.json, run npm run invitations:generate, then pass its six-character token. Do not use a real guest's link for this test.");
 const environment = ["localhost", "127.0.0.1"].includes(base.hostname) ? "local" : "production";
-console.log(`Testing ${endpoint.origin}; test response_id: ${responseId}`);
+console.log(`Testing ${endpoint.origin}; test invitation_id: ${invitation.id}`);
 
 const steps = [
   { label: "Create maybe", attendance: "maybe" },
@@ -28,7 +31,7 @@ try {
       method: "POST",
       headers: { "Content-Type": "application/json", Origin: base.origin },
       body: JSON.stringify({
-        responseId,
+        invitationToken,
         name: `TEST RSVP ${environment}`,
         attendance: step.attendance,
         message: "Phản hồi thử kết nối. Không tính là khách mời thật.",
@@ -45,8 +48,8 @@ try {
     console.log(`${step.label}: OK, HTTP ${result.status}`);
   }
   if (!process.exitCode) {
-    console.log(`All four writes acknowledged. In Google Sheets, verify exactly ONE row with response_id ${responseId}, attendance=no, attendance_label=Không tham dự, and the original created_at.`);
-    console.log("The marked test row is kept for inspection. Each new script run creates one new test ID.");
+    console.log(`All four writes acknowledged. In Google Sheets, verify exactly ONE row with invitation_id ${invitation.id}, invited_name=${invitation.name}, attendance=no, and the original created_at.`);
+    console.log("The marked test row is kept for inspection. Reruns using the same test link update this row.");
   }
 } catch {
   console.error("Connection timed out or failed. Check the dev server/deployment; any acknowledged test row remains in the Sheet.");

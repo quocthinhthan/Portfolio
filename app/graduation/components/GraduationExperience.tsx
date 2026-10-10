@@ -18,7 +18,7 @@ import { graduationConfig as config } from "../graduation.config";
 import { invitationSerif } from "../graduation.font";
 import s from "../graduation.module.css";
 
-export default function GraduationExperience({ guestName }: { guestName: string }) {
+export default function GraduationExperience({ guestName, invitationToken }: { guestName: string; invitationToken?: string }) {
   const [phase, setPhase] = useState<"closed" | "opening" | "open">("closed");
   const main = useRef<HTMLElement>(null);
   const locked = phase !== "open";
@@ -48,7 +48,7 @@ export default function GraduationExperience({ guestName }: { guestName: string 
             <Countdown />
             <JourneyTimeline />
             {config.sections.showMemories && <MemoryGallery />}
-            <RSVP guestName={guestName} />
+            <RSVP guestName={guestName} invitationToken={invitationToken} />
             {config.sections.showGuestbook && <Guestbook guestName={guestName} />}
             <FinalCommit />
           </main>
