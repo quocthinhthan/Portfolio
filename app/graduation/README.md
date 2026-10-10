@@ -1,12 +1,12 @@
 # The Final Commit — Graduation 2026
 
-Route: `/graduation`. Personalized example: `/graduation?to=Anh%20Tuấn`.
+Public route: `/graduation`. Private invitations: `/graduation/<slug>/<six-character-token>`. See [private invitation setup](./INVITATIONS_SETUP.md) and the generated [links](./invitations/LINKS.md).
 
-The sanitized `to` name appears with “Trân trọng kính mời” on both the opening cover and the hero after opening. Include honorifics directly in the name when appropriate (for example, `Thầy Nguyễn Văn An`). Without `to`, both views greet “Quý thầy cô, gia đình & bạn bè”.
+Only a valid, active token can personalize the cover/hero and enable RSVP. Names come from the server-only JSON registry; `?to` is ignored. A mismatched slug redirects to the canonical link. Include honorifics in the registry name. The public page greets “Quý thầy cô, gia đình & bạn bè” and cannot submit RSVP.
 
 The invitation uses a warm-white and champagne-gold palette, with charcoal text and light surfaces throughout. Palette tokens are scoped in `graduation.module.css`; its existing typography is preserved. The Open Graph preview follows the same palette.
 
-This invitation is frontend-only. No backend, database, third-party form service, or response delivery is installed or required.
+The invitation has a Google Sheets RSVP backend through a Next.js API route. RSVP is configured as live after successful local write checks; every deployment requires its own server environment variables. See [Google Sheets setup](./GOOGLE_SHEETS_SETUP.md). Set `responses.mode` to `demo` for previews without response delivery.
 
 ## Update the invitation
 
@@ -23,20 +23,20 @@ Edit **graduation.config.ts** for name, class, dates, venue, map link, photos, a
 
 ## Responses
 
-`services/invitation.ts` exposes a typed adapter with `submitRSVP` and `submitNote`. The initial implementation is a **demo**: no network request, persistence, or delivery to the host. This is stated in the forms and confirmation messages. Notes live in React state and disappear on reload.
+`services/invitation.ts` exposes a typed adapter with `submitRSVP` and `submitNote`. RSVP supports `yes`, `maybe`, and `no`. The API resolves the invitation token and adds canonical `invitation_id`/`invited_name`; it ignores client-supplied recipient names/IDs and does not forward tokens to Google. Deduplication uses the invitation ID across browsers/devices; no browser storage is required. Demo mode sends nothing. Guestbook notes remain a separate demo in React state.
 
-To connect a backend, replace the adapter methods with your API or provider calls, return `{ mode: "live" }` only after a successful write, then change `responses.mode` to `live`. Changing the config alone deliberately fails closed. Validate on the server, add rate limits, and moderate public notes. Keep server secrets out of client modules. Fetch approved notes through your backend when adding persistent guestbook reading.
+Deploy the updated `google-sheets/Code.gs`, run `setupRSVP` to migrate old headers without deleting data, and keep `RSVP_SCRIPT_URL`/`RSVP_SCRIPT_SECRET` on the server. The website requires schema version 2 and confirms only successful writes. The script uses a lock and best-effort limits to update/append by invitation ID. Guestbook persistence and public note moderation are outside this integration.
 
 ## Optional QR
 
-`createInvitationUrl(baseUrl, name)` creates a sanitized share URL. `InvitationQR` accepts a `renderCode(url)` renderer from a local QR library when needed. No QR encoder dependency is installed and no guest names are sent to a remote QR service. The QR component is not mounted on the invitation.
+`createInvitationUrl(baseUrl, { slug, token })` builds a URL for an existing invitation. `InvitationQR` takes a selected invitation and a local `renderCode(url)` renderer. It never receives the full registry. No QR encoder dependency is installed; the QR component is not mounted.
 
 ## Check
 
 `npm run lint`, `npm run build`. Utility checks can be run with:
 
 ```sh
-node --experimental-strip-types --test app/graduation/tests/utils.test.mjs
+node --experimental-strip-types --test app/graduation/tests/*.test.mjs
 ```
 
-UI checklist: open cover, keyboard focus, personalized long name, both RSVP responses, note validation, gallery dialog Escape/focus return, reduced motion, 375/390/430/768px and desktop.
+UI checklist: open cover, keyboard focus, all three RSVP states, invalid/revoked tokens, slug redirects, ignored `?to`, generic RSVP lock, reduced motion, mobile and desktop.

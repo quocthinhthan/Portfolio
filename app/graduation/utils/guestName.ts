@@ -6,10 +6,9 @@ export function sanitizeGuestName(value: unknown): string {
   return Array.from(clean).slice(0, 48).join("").trim();
 }
 
-/** URL ready to share or pass to any QR encoder; no third-party guest data transmission. */
-export function createInvitationUrl(baseUrl: string, guestName = ""): string {
-  const url = new URL("/graduation", baseUrl);
-  const name = sanitizeGuestName(guestName);
-  if (name) url.searchParams.set("to", name);
-  return url.toString();
+/** Build from an existing invitation, never turn a free-form name into a private link. */
+export function createInvitationUrl(baseUrl: string, invitation?: { slug: string; token: string }): string {
+  if (!invitation) return new URL("/graduation", baseUrl).toString();
+  if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(invitation.slug) || !/^[A-Za-z0-9]{6}$/.test(invitation.token)) throw new Error("Invalid invitation link.");
+  return new URL(`/graduation/${invitation.slug}/${invitation.token}`, baseUrl).toString();
 }
